@@ -536,13 +536,15 @@
       return `rgb(${r}, ${g}, ${b})`;
     }
 
-    // Define color stops at different scroll points
+    // Define color stops at different scroll points (Sunset effect)
     const colorStops = [
-      { position: 0, color: '#0E0F12' },      // Dark (inicio)
-      { position: 0.25, color: '#693FC1' },   // Purple
-      { position: 0.5, color: '#B05F90' },    // Pink
-      { position: 0.75, color: '#7E9197' },   // Blue-gray
-      { position: 1, color: '#0E0F12' }       // Dark (fim)
+      { position: 0, color: '#0E0F12' },      // Preto (Topo - Noite)
+      { position: 0.15, color: '#2A1B4F' },   // Roxo escuro
+      { position: 0.3, color: '#693FC1' },    // Violeta vibrante
+      { position: 0.45, color: '#B05F90' },   // Lilás/Rosa
+      { position: 0.6, color: '#FF9A56' },    // Laranja/Salmão
+      { position: 0.8, color: '#FFD4A3' },    // Pêssego/Bege claro
+      { position: 1, color: '#F5F5F0' }       // Branco/Creme (Fim - Dia)
     ];
 
     window.addEventListener('scroll', () => {
