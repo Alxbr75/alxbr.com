@@ -1,9 +1,446 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Meu site</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alxbr — Portfolio & Projetos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e293b;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --border: #334155;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      z-index: 1000;
+    }
+
+    nav .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Value Props */
+    .value-props {
+      padding: 6rem 0;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+
+    .value-props h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .prop-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .prop-card:hover {
+      border-color: var(--accent);
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .prop-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .prop-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .prop-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: 6rem 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .project-content {
+      padding: 2rem;
+    }
+
+    .project-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .project-content p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--secondary);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--accent-light);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .props-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Funcionou 🚀</h1>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">alxbr</div>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#projects">Projetos</a></li>
+        <li><a href="#contact">Contato</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>Olá, eu sou <span class="highlight">Alex</span></h1>
+      <p>Desenvolvedor Full Stack apaixonado por criar experiências web incríveis e soluções inovadoras.</p>
+      <button class="cta-button">Vamos Conversar</button>
+    </div>
+  </section>
+
+  <!-- Value Props -->
+  <section class="value-props">
+    <div class="container">
+      <h2>O que faço</h2>
+      <div class="props-grid">
+        <div class="prop-card">
+          <div class="prop-icon">🎨</div>
+          <h3>Design Moderno</h3>
+          <p>Interfaces limpas e responsivas que deixam seus usuários felizes</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">⚡</div>
+          <h3>Performance</h3>
+          <p>Código otimizado para velocidade e eficiência máxima</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🚀</div>
+          <h3>Inovação</h3>
+          <p>Sempre usando as melhores práticas e tecnologias atuais</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🤝</div>
+          <h3>Colaboração</h3>
+          <p>Trabalho eficaz em equipe para alcançar objetivos juntos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects">
+    <div class="container">
+      <h2 class="section-title" id="projects">Projetos Destacados</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-image">💼</div>
+          <div class="project-content">
+            <h3>Projeto 1</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">MongoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image">🎯</div>
+          <div class="project-content">
+            <h3>Projeto 2</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">Firebase</span>
+              <span class="tag">Tailwind</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image">🌟</div>
+          <div class="project-content">
+            <h3>Projeto 3</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">AI/ML</span>
+              <span class="tag">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="value-props" id="contact">
+    <div class="container">
+      <div style="text-align: center;">
+        <h2>Vamos Trabalhar Juntos?</h2>
+        <p style="color: var(--text-secondary); margin: 1rem 0 2rem; font-size: 1.1rem;">Tenho uma ideia? Precisa de ajuda com um projeto? Me envie uma mensagem.</p>
+        <button class="cta-button">Entre em Contato</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <a href="https://github.com" class="footer-link">GitHub</a>
+        <a href="https://linkedin.com" class="footer-link">LinkedIn</a>
+        <a href="mailto:seu@email.com" class="footer-link">Email</a>
+      </div>
+      <p>&copy; 2025 Alex. Todos os direitos reservados.</p>
+    </div>
+  </footer>
 </body>
 </html>
