@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <title>Alxbr — Portfolio & Projetos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --light-bg: #E9DFD6;
+      --dark-bg: #0E0F12;
+      --gray-warm: #5F5958;
+      --purple: #693FC1;
+      --pink: #B05F90;
+      --blue-gray: #7E9197;
+      --text-light: #0E0F12;
+      --text-dark: #E9DFD6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      /* Gradiente vertical: preto → roxo → laranja → branco */
+      background: linear-gradient(
+        to bottom,
+        #000000 0%,
+        #181323 15%,
+        #511dbe 30%,
+        #8651f6 42%,
+        #b9a0f1 50%,
+        #ed8f68 58%,
+        #f09948 65%,
+        #f7cea3 75%,
+        #f3f0ec 88%,
+        #fdfaf7 100%
+      );
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(14, 15, 18, 0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-warm);
+      padding: 1rem 0;
+      z-index: 1000;
+    }
+
+    nav .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--purple);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(176, 95, 144, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      background: var(--dark-bg);
+      padding: 3rem;
+      border-radius: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--blue-gray);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      color: var(--light-bg);
+      padding: 1rem 2.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(105, 63, 193, 0.4);
+    }
+
+    /* Value Props */
+    .value-props {
+      padding: 6rem 0;
+    }
+
+    .value-props .container {
+      background: var(--dark-bg);
+      border-radius: 2rem;
+      padding: 4rem 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .value-props h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .prop-card {
+      background: transparent;
+      border: 2px solid var(--gray-warm);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prop-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(105, 63, 193, 0.1) 0%, rgba(176, 95, 144, 0.1) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .prop-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 10px 30px rgba(105, 63, 193, 0.2);
+    }
+
+    .prop-card:hover::before {
+      opacity: 1;
+    }
+
+    .prop-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .prop-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--purple);
+      position: relative;
+      z-index: 1;
+    }
+
+    .prop-card p {
+      color: var(--blue-gray);
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: 6rem 0;
+    }
+
+    .projects .container {
+      background: var(--dark-bg);
+      border-radius: 2rem;
+      padding: 3rem 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: transparent;
+      border: 2px solid var(--gray-warm);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--pink);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(176, 95, 144, 0.2);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 50%, var(--blue-gray) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(233, 223, 214, 0.05);
+    }
+
+    .project-content {
+      padding: 2rem;
+    }
+
+    .project-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--purple);
+    }
+
+    .project-content p {
+      color: var(--blue-gray);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(105, 63, 193, 0.15);
+      color: var(--purple);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--purple);
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(176, 95, 144, 0.15);
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 6rem 0;
+      text-align: center;
+    }
+
+    .contact-section .container {
+      background: var(--dark-bg);
+      border-radius: 2rem;
+      padding: 4rem 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .contact-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-section p {
+      color: var(--blue-gray);
+      margin: 1rem 0 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      border-top: 1px solid var(--gray-warm);
+      padding: 3rem 0;
+      text-align: center;
+      color: var(--blue-gray);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--purple);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .footer-link:hover {
+      color: var(--pink);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .props-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <img src="/logo.png" alt="alxbr logo" style="height: 40px; width: auto; display: block;">
+      </div>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">Sobre</a></li>
+        <li><a href="#projects">Projetos</a></li>
+        <li><a href="#contact">Contato</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>Olá, eu sou <span class="highlight">Alex</span></h1>
+      <p>Desenvolvedor Full Stack apaixonado por criar experiências web incríveis e soluções inovadoras.</p>
+      <button class="cta-button">Vamos Conversar</button>
+    </div>
+  </section>
+
+  <!-- Value Props -->
+  <section class="value-props">
+    <div class="container">
+      <h2>O que faço</h2>
+      <div class="props-grid">
+        <div class="prop-card">
+          <div class="prop-icon">🎨</div>
+          <h3>Design Moderno</h3>
+          <p>Interfaces limpas e responsivas que deixam seus usuários felizes</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">⚡</div>
+          <h3>Performance</h3>
+          <p>Código otimizado para velocidade e eficiência máxima</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🚀</div>
+          <h3>Inovação</h3>
+          <p>Sempre usando as melhores práticas e tecnologias atuais</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🤝</div>
+          <h3>Colaboração</h3>
+          <p>Trabalho eficaz em equipe para alcançar objetivos juntos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" style="padding: 6rem 0;">
+    <div class="container">
+      <div style="background: var(--dark-bg); border-radius: 2rem; padding: 4rem 2rem; border: 1px solid var(--border);">
+        
+        <!-- Photo + Headline -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <img src="/favicon.png" alt="Alexandre — Desenvolvedor & Empreendedor"
+               style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(105, 63, 193, 0.3); margin-bottom: 1.5rem;" />
+          <h2 style="font-size: 2rem; font-weight: 700; margin: 0 0 0.5rem; background: linear-gradient(135deg, #693FC1, #B05F90); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Alexandre Baldini Ribeiro
+          </h2>
+          <p style="font-size: 1.1rem; opacity: 0.8; margin: 0; line-height: 1.6; color: var(--blue-gray);">
+            Desenvolvedor · Empreendedor · Builder<br/>
+            <span style="font-size: 0.95rem; opacity: 0.7;">Boston, MA · Originário do Brasil</span>
+          </p>
+        </div>
+
+        <!-- Content -->
+        <div style="line-height: 1.8; font-size: 1.05rem; max-width: 700px; margin: 0 auto;">
+
+          <h3 style="font-size: 1.2rem; font-weight: 600; color: var(--purple); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem;">A Jornada</h3>
+          <p style="margin: 0 0 1.25rem; color: var(--blue-gray);">
+            Comecei desmontando computadores antes de a maioria das pessoas ter um em casa. Em 1998, transformei essa obsessão em carreira — construindo e reparando máquinas, oferecendo suporte técnico, e aprendendo cada camada da stack, de cima para baixo. Essa base prática moldou como penso sobre tecnologia: prático em primeiro lugar, sempre.
+          </p>
+          <p style="margin: 0 0 1.25rem; color: var(--blue-gray);">
+            Ao longo de 25+ anos, passei do suporte para empreendedorismo — lançando negócios, gerenciando equipes, e eventualmente transitando para desenvolvimento web e software. Mudar do Brasil para os Estados Unidos adicionou outra dimensão: adaptabilidade, fluidez intercultural, e o impulso de reconstruir do zero mais de uma vez.
+          </p>
+
+          <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--purple); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Habilidades & Experiência</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(105, 63, 193, 0.15); border: 1px solid rgba(105, 63, 193, 0.3); font-size: 0.9rem; color: var(--purple);">Web Development</span>
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(176, 95, 144, 0.15); border: 1px solid rgba(176, 95, 144, 0.3); font-size: 0.9rem; color: var(--pink);">JavaScript / Node.js</span>
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(105, 63, 193, 0.15); border: 1px solid rgba(105, 63, 193, 0.3); font-size: 0.9rem; color: var(--purple);">Infraestrutura IT</span>
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(176, 95, 144, 0.15); border: 1px solid rgba(176, 95, 144, 0.3); font-size: 0.9rem; color: var(--pink);">Hardware & Rede</span>
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(105, 63, 193, 0.15); border: 1px solid rgba(105, 63, 193, 0.3); font-size: 0.9rem; color: var(--purple);">IA & Automação</span>
+            <span style="padding: 0.35rem 0.85rem; border-radius: 20px; background: rgba(176, 95, 144, 0.15); border: 1px solid rgba(176, 95, 144, 0.3); font-size: 0.9rem; color: var(--pink);">Empreendedorismo</span>
+          </div>
+
+          <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--purple); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">O Que Estou Construindo</h3>
+          <p style="margin: 0 0 1.25rem; color: var(--blue-gray);">
+            Agora estou imerso em tecnologias web modernas — trabalhando com ferramentas IA, pipelines de automação, e desenvolvimento full-stack. Este site é tanto um portfólio quanto um laboratório: tudo aqui é construído, iterado, e entregue por mim.
+          </p>
+
+          <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--purple); margin: 2rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Filosofia</h3>
+          <p style="margin: 0 0 0; color: var(--blue-gray);">
+            Acredito que a melhor tech é construída por pessoas que sujaram as mãos. Já consertei placas de circuito, gerenciei negócios, imigrei para um novo país, e aprendi novas línguas — técnicas e humanas. Todo problema é só outro sistema para entender. Não estou caçando tendências; estou construindo coisas que funcionam.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects">
+    <div class="container">
+      <h2 class="section-title" id="projects">Projetos Destacados</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-image">💼</div>
+          <div class="project-content">
+            <h3>Projeto 1</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">MongoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image">🎯</div>
+          <div class="project-content">
+            <h3>Projeto 2</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">Firebase</span>
+              <span class="tag">Tailwind</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-image">🌟</div>
+          <div class="project-content">
+            <h3>Projeto 3</h3>
+            <p>Descrição breve do projeto e seus impactos. Adicione detalhes sobre o que você construiu e aprendeu.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">AI/ML</span>
+              <span class="tag">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <h2>Vamos Trabalhar Juntos?</h2>
+      <p>Tenho uma ideia? Precisa de ajuda com um projeto? Me envie uma mensagem.</p>
+      <button class="cta-button">Entre em Contato</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <a href="https://github.com/Alxbr75" class="footer-link">GitHub</a>
+        <a href="https://linkedin.com" class="footer-link">LinkedIn</a>
+        <a href="mailto:contato@alxbr.com" class="footer-link">Email</a>
+      </div>
+      <p>&copy; 2025 Alex. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>
