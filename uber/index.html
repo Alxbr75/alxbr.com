@@ -3,21 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plano Uber — Maratona Boston 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&display=swap" rel="stylesheet">
+<title>Plano Uber — Maratona Boston 2026 · v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0a;
     --bg-elev: #141414;
-    --bg-card: #1a1a1a;
+    --bg-card: #181818;
+    --bg-card-hover: #1f1f1f;
     --ink: #f5f1e8;
     --ink-dim: #8b8680;
+    --ink-dimmer: #555;
     --accent: #fdb813;        /* amarelo sinalização */
+    --accent-soft: #fde68a;
     --accent-2: #dc143c;      /* red / finish line */
+    --accent-2-soft: #fca5a5;
     --blue: #003da5;          /* Boston blue */
+    --blue-soft: #60a5fa;
     --green: #0f8a3c;
-    --border: #2a2a2a;
+    --green-soft: #86efac;
+    --purple: #8b5cf6;
+    --purple-soft: #c4b5fd;
+    --cold: #7dd3fc;          /* cold weather */
+    --border: #262626;
+    --border-soft: #1e1e1e;
     --radius: 4px;
+    --radius-lg: 8px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,63 +43,107 @@
     min-height: 100vh;
   }
 
-  /* Texture overlay */
+  /* Ambient glow */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(circle at 20% 10%, rgba(253, 184, 19, 0.04) 0%, transparent 40%),
-                      radial-gradient(circle at 80% 80%, rgba(0, 61, 165, 0.06) 0%, transparent 50%);
+    background-image:
+      radial-gradient(ellipse 800px 400px at 10% 0%, rgba(253, 184, 19, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 90% 100%, rgba(0, 61, 165, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 400px 300px at 50% 50%, rgba(220, 20, 60, 0.03) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
 
+  /* Subtle grain */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
   .wrapper {
     position: relative;
-    z-index: 1;
-    max-width: 1100px;
+    z-index: 2;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 32px 28px 120px;
   }
 
   /* ========== HEADER ========== */
   header {
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 20px;
-    margin-bottom: 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 20px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 14px;
+    padding-bottom: 22px;
+    position: relative;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 50%, var(--blue) 100%);
   }
 
   .header-left h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    line-height: 0.9;
-    letter-spacing: 0.01em;
+    font-size: clamp(2.6rem, 6.5vw, 4.4rem);
+    line-height: 0.88;
+    letter-spacing: 0.012em;
     color: var(--ink);
   }
 
   .header-left h1 span {
-    color: var(--accent);
+    background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .header-left p {
+  .subtitle-line {
+    margin-top: 12px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .subtitle-line p {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--ink-dim);
-    margin-top: 8px;
+  }
+
+  .version-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    padding: 3px 8px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    border-radius: 2px;
   }
 
   .driver-badge {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
+    gap: 11px;
+    padding: 11px 18px;
     background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
     border: 1px solid #6366f1;
     border-radius: 999px;
@@ -97,6 +152,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 700;
+    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.25);
   }
 
   .diamond-icon {
@@ -105,6 +161,42 @@
     background: linear-gradient(135deg, #a5b4fc, #6366f1 50%, #312e81);
     transform: rotate(45deg);
     border-radius: 2px;
+    box-shadow: 0 0 12px rgba(165, 180, 252, 0.5);
+  }
+
+  /* ========== UPDATE BANNER ========== */
+  .update-banner {
+    background: linear-gradient(90deg, rgba(125, 211, 252, 0.08), rgba(125, 211, 252, 0.02));
+    border: 1px solid rgba(125, 211, 252, 0.3);
+    border-left: 3px solid var(--cold);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 24px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .update-banner .icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .update-banner .content {
+    flex: 1;
+    font-size: 0.92rem;
+    color: #d1e4f0;
+  }
+
+  .update-banner .content strong {
+    color: var(--cold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
   }
 
   /* ========== DAY NAV ========== */
@@ -112,10 +204,12 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 6px;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
     position: sticky;
     top: 0;
-    background: var(--bg);
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 16px 0;
     z-index: 20;
     border-bottom: 1px solid var(--border);
@@ -130,9 +224,9 @@
     cursor: pointer;
     border-radius: var(--radius);
     text-align: center;
-    transition: all 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    min-height: 62px;
+    min-height: 64px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -143,12 +237,12 @@
     font-size: 0.55rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    opacity: 0.7;
+    opacity: 0.65;
   }
 
   .day-nav button .day-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.55rem;
     line-height: 1;
     margin-top: 2px;
   }
@@ -156,6 +250,7 @@
   .day-nav button:hover {
     color: var(--ink);
     border-color: var(--accent);
+    transform: translateY(-1px);
   }
 
   .day-nav button.active {
@@ -163,57 +258,75 @@
     color: #000;
     border-color: var(--accent);
     font-weight: 700;
+    box-shadow: 0 6px 20px rgba(253, 184, 19, 0.3);
   }
 
-  .day-nav button.tier-1::after {
+  .day-nav button.active .dow { opacity: 1; }
+
+  .day-nav button.tier-gold::after {
     content: "";
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 5px;
+    right: 5px;
     width: 6px;
     height: 6px;
     background: var(--accent-2);
     border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent-2);
   }
 
-  .day-nav button.active.tier-1::after {
+  .day-nav button.active.tier-gold::after {
     background: #000;
+    box-shadow: none;
   }
 
   /* ========== DAY PAGE ========== */
   .day-page {
     display: none;
-    animation: fadeIn 0.4s ease;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .day-page.active {
-    display: block;
-  }
+  .day-page.active { display: block; }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Day Header */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .day-page.active .slot,
+  .day-page.active .ov-card {
+    animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .day-page.active .slot:nth-child(1) { animation-delay: 0.05s; }
+  .day-page.active .slot:nth-child(2) { animation-delay: 0.1s; }
+  .day-page.active .slot:nth-child(3) { animation-delay: 0.15s; }
+  .day-page.active .slot:nth-child(4) { animation-delay: 0.2s; }
+  .day-page.active .slot:nth-child(5) { animation-delay: 0.25s; }
+  .day-page.active .slot:nth-child(6) { animation-delay: 0.3s; }
+  .day-page.active .slot:nth-child(7) { animation-delay: 0.35s; }
+
+  /* ========== DAY HEADER ========== */
   .day-header {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 24px;
+    gap: 32px;
     align-items: end;
-    margin-bottom: 24px;
-    padding-bottom: 20px;
+    margin-bottom: 22px;
+    padding-bottom: 22px;
     border-bottom: 1px dashed var(--border);
   }
 
-  .day-title-block {
-    display: flex;
-    flex-direction: column;
-  }
+  .day-title-block { display: flex; flex-direction: column; }
 
   .day-date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--accent);
@@ -222,34 +335,40 @@
 
   .day-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 4.6rem);
-    line-height: 0.92;
+    font-size: clamp(2.8rem, 7vw, 4.8rem);
+    line-height: 0.9;
     letter-spacing: 0.005em;
   }
 
   .day-subtitle {
     font-family: 'Fraunces', serif;
     font-style: italic;
-    font-size: 1.1rem;
+    font-size: 1.08rem;
     color: var(--ink-dim);
-    margin-top: 8px;
-    max-width: 520px;
+    margin-top: 10px;
+    max-width: 560px;
+    line-height: 1.5;
   }
 
-  /* Day stats */
+  /* Stats panel */
   .day-stats {
     display: flex;
-    gap: 24px;
+    gap: 18px;
     flex-shrink: 0;
   }
 
   .stat {
     text-align: center;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    min-width: 84px;
   }
 
   .stat-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
+    font-size: 0.58rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--ink-dim);
@@ -259,19 +378,21 @@
 
   .stat-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
+    font-size: 1.9rem;
     line-height: 1;
     color: var(--ink);
   }
 
-  .stat-value.hot {
-    color: var(--accent);
-  }
+  .stat-value.hot { color: var(--accent); }
+  .stat-value.peak { color: var(--accent-2); }
+  .stat-value.cold { color: var(--cold); }
 
-  /* Tier badge */
+  /* ========== TIER BADGE ========== */
   .tier-badge {
-    display: inline-block;
-    padding: 3px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
     border-radius: 3px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.62rem;
@@ -279,38 +400,96 @@
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: 10px;
+    width: fit-content;
   }
 
-  .tier-low    { background: #1f2a22; color: #77b58a; border: 1px solid #2d4636; }
-  .tier-medium { background: #2a2520; color: #d4a574; border: 1px solid #3f362c; }
-  .tier-high   { background: #2a1f22; color: #e28a8a; border: 1px solid #3f2a2c; }
-  .tier-peak   { background: var(--accent); color: #000; }
+  .tier-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+  }
 
-  /* Weather bar */
-  .weather-bar {
-    background: var(--bg-elev);
+  .tier-low    { background: rgba(15, 138, 60, 0.1); color: #77b58a; border: 1px solid rgba(15, 138, 60, 0.3); }
+  .tier-medium { background: rgba(253, 184, 19, 0.08); color: #d4a574; border: 1px solid rgba(253, 184, 19, 0.25); }
+  .tier-high   { background: rgba(220, 20, 60, 0.1); color: #e28a8a; border: 1px solid rgba(220, 20, 60, 0.3); }
+  .tier-peak   { background: linear-gradient(135deg, var(--accent), #f59e0b); color: #000; border: none; }
+
+  /* ========== WEATHER CARD ========== */
+  .weather-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-left: 3px solid var(--blue);
-    padding: 12px 18px;
+    border-radius: var(--radius);
+    padding: 16px 20px;
     margin-bottom: 28px;
-    display: flex;
-    gap: 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
     align-items: center;
-    flex-wrap: wrap;
   }
 
-  .weather-item {
+  .weather-card.cold-day { border-left-color: var(--cold); }
+  .weather-card.warm-day { border-left-color: var(--accent); }
+  .weather-card.rain-day { border-left-color: var(--blue-soft); }
+
+  .weather-temp {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .weather-temp .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .weather-temp .unit {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--ink-dim);
   }
 
-  .weather-item strong {
-    color: var(--ink);
+  .weather-temp .low {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+    margin-left: 4px;
+  }
+
+  .weather-details {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+  }
+
+  .weather-details strong { color: var(--ink); font-weight: 700; }
+
+  .weather-details .highlight {
+    color: var(--accent);
     font-weight: 700;
   }
 
-  .weather-item.warn strong {
-    color: var(--accent);
+  .weather-details .warn {
+    color: var(--accent-2-soft);
+    font-weight: 700;
+  }
+
+  .weather-details .cold-hl {
+    color: var(--cold);
+    font-weight: 700;
+  }
+
+  .weather-icon {
+    font-size: 2.4rem;
+    line-height: 1;
   }
 
   /* ========== TIMELINE ========== */
@@ -323,79 +502,95 @@
     content: "";
     position: absolute;
     left: 24px;
-    top: 8px;
-    bottom: 8px;
+    top: 14px;
+    bottom: 14px;
     width: 2px;
-    background: var(--border);
+    background: linear-gradient(to bottom,
+      var(--border) 0%,
+      var(--border) 100%);
   }
 
   .slot {
     position: relative;
     margin-bottom: 20px;
-    padding: 18px 20px;
+    padding: 20px 22px;
     background: var(--bg-card);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .slot:hover {
+    background: var(--bg-card-hover);
+    border-color: #333;
   }
 
   .slot::before {
     content: "";
     position: absolute;
     left: -42px;
-    top: 22px;
+    top: 24px;
     width: 14px;
     height: 14px;
     border-radius: 50%;
     background: var(--bg);
     border: 2px solid var(--ink-dim);
+    z-index: 1;
   }
 
+  .slot.hot {
+    border-left: 3px solid var(--accent);
+  }
   .slot.hot::before {
     background: var(--accent);
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(253, 184, 19, 0.18);
+    box-shadow: 0 0 0 4px rgba(253, 184, 19, 0.15), 0 0 12px rgba(253, 184, 19, 0.4);
   }
 
+  .slot.peak {
+    border-left: 3px solid var(--accent-2);
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.06), transparent 40%);
+  }
   .slot.peak::before {
     background: var(--accent-2);
     border-color: var(--accent-2);
-    box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.22);
+    box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.2), 0 0 14px rgba(220, 20, 60, 0.5);
+    animation: pulse 2s infinite;
   }
 
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.2), 0 0 14px rgba(220, 20, 60, 0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(220, 20, 60, 0.15), 0 0 18px rgba(220, 20, 60, 0.7); }
+  }
+
+  .slot.rest {
+    background: var(--bg-elev);
+    border-color: var(--border-soft);
+    opacity: 0.82;
+  }
   .slot.rest::before {
     background: var(--bg-elev);
     border-color: var(--ink-dim);
   }
 
-  .slot.filter::before {
-    background: #8b5cf6;
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.22);
-  }
-
   .slot-header {
     display: flex;
     gap: 14px;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
     margin-bottom: 8px;
   }
 
   .slot-time {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 700;
     color: var(--accent);
     letter-spacing: 0.02em;
   }
 
-  .slot.rest .slot-time {
-    color: var(--ink-dim);
-  }
-
-  .slot.filter .slot-time {
-    color: #c4b5fd;
-  }
+  .slot.peak .slot-time { color: var(--accent-2-soft); }
+  .slot.rest .slot-time { color: var(--ink-dim); }
 
   .slot-zone {
     font-family: 'JetBrains Mono', monospace;
@@ -403,14 +598,31 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-dim);
-    padding: 2px 8px;
+    padding: 3px 9px;
     border: 1px solid var(--border);
-    border-radius: 2px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.3);
   }
+
+  .slot-heat {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .heat-1 { background: #1a1f25; color: #64748b; }
+  .heat-2 { background: #2a2a1a; color: #a3a37a; }
+  .heat-3 { background: rgba(253, 184, 19, 0.18); color: var(--accent); }
+  .heat-4 { background: rgba(220, 20, 60, 0.2); color: var(--accent-2-soft); }
+  .heat-5 { background: linear-gradient(135deg, var(--accent-2), #991b1b); color: #fff; }
 
   .slot-title {
     font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 600;
     line-height: 1.3;
     margin-bottom: 6px;
@@ -428,46 +640,56 @@
     font-weight: 600;
   }
 
+  .slot.peak .slot-body strong {
+    color: #fecaca;
+  }
+
   /* Filter callout */
   .filter-callout {
-    margin-top: 12px;
-    padding: 12px 14px;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.04));
-    border: 1px dashed #8b5cf6;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.13), rgba(139, 92, 246, 0.03));
+    border: 1px dashed var(--purple);
     border-radius: var(--radius);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .filter-callout::before {
+    content: "🎯";
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 1.4rem;
+    opacity: 0.4;
   }
 
   .filter-callout .filter-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #c4b5fd;
+    color: var(--purple-soft);
     font-weight: 700;
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
 
-  .filter-callout strong {
-    color: #e9d5ff;
-  }
+  .filter-callout strong { color: #e9d5ff; }
 
   /* Warning callout */
   .warn-callout {
     margin: 16px 0;
-    padding: 14px 16px;
-    background: rgba(220, 20, 60, 0.08);
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.1), rgba(220, 20, 60, 0.02));
     border-left: 3px solid var(--accent-2);
     border-radius: var(--radius);
     font-size: 0.92rem;
     color: #fca5a5;
   }
 
-  .warn-callout strong {
-    color: #fecaca;
-    font-weight: 700;
-  }
+  .warn-callout strong { color: #fecaca; font-weight: 700; }
 
   /* ========== OVERVIEW PAGE ========== */
   .overview-grid {
@@ -480,10 +702,16 @@
   .ov-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     padding: 22px;
     position: relative;
     overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .ov-card:hover {
+    border-color: #333;
+    transform: translateY(-2px);
   }
 
   .ov-card::before {
@@ -496,22 +724,23 @@
     background: var(--accent);
   }
 
-  .ov-card.blue::before  { background: var(--blue); }
+  .ov-card.blue::before  { background: var(--blue-soft); }
   .ov-card.red::before   { background: var(--accent-2); }
-  .ov-card.green::before { background: var(--green); }
-  .ov-card.purple::before { background: #8b5cf6; }
+  .ov-card.green::before { background: var(--green-soft); }
+  .ov-card.purple::before { background: var(--purple); }
+  .ov-card.cold::before { background: var(--cold); }
 
   .ov-card h3 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     letter-spacing: 0.02em;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .ov-card p {
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     color: #c5bfae;
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .perks-list {
@@ -520,7 +749,7 @@
   }
 
   .perks-list li {
-    padding: 8px 0;
+    padding: 9px 0;
     border-bottom: 1px dashed var(--border);
     font-size: 0.9rem;
     display: flex;
@@ -532,20 +761,111 @@
   .perks-list strong {
     color: var(--accent);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     letter-spacing: 0.05em;
     min-width: 135px;
+    font-weight: 700;
   }
 
-  /* Filter table */
+  /* ========== WEEK FORECAST STRIP ========== */
+  .week-forecast {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .forecast-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .forecast-title::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--cold);
+    transform: rotate(45deg);
+  }
+
+  .forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 6px;
+  }
+
+  .forecast-day {
+    text-align: center;
+    padding: 10px 4px;
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+  }
+
+  .forecast-day:hover { transform: translateY(-2px); border-color: #333; }
+
+  .fc-dow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+
+  .fc-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .fc-icon {
+    font-size: 1.2rem;
+    margin: 6px 0 4px;
+    line-height: 1;
+  }
+
+  .fc-temp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .fc-temp .lo {
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+
+  .fc-rain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--blue-soft);
+    margin-top: 3px;
+  }
+
+  .forecast-day.cold { border-color: rgba(125, 211, 252, 0.3); background: linear-gradient(135deg, rgba(125, 211, 252, 0.06), transparent); }
+  .forecast-day.hot-day { border-color: rgba(253, 184, 19, 0.35); background: linear-gradient(135deg, rgba(253, 184, 19, 0.1), transparent); }
+  .forecast-day.peak-day { border-color: var(--accent-2); background: linear-gradient(135deg, rgba(220, 20, 60, 0.15), transparent); }
+
+  /* ========== FILTER TABLE ========== */
   .filter-table {
     width: 100%;
     border-collapse: collapse;
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    font-size: 0.9rem;
+    font-size: 0.91rem;
   }
 
   .filter-table thead {
@@ -553,11 +873,11 @@
   }
 
   .filter-table th {
-    padding: 12px 14px;
+    padding: 14px;
     text-align: left;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #c4b5fd;
     font-weight: 700;
@@ -570,17 +890,19 @@
     vertical-align: top;
   }
 
-  .filter-table tr:last-child td {
-    border-bottom: none;
-  }
+  .filter-table tr:last-child td { border-bottom: none; }
+
+  .filter-table tr:hover td { background: rgba(139, 92, 246, 0.05); }
 
   .filter-table .rank {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     color: var(--accent);
     line-height: 1;
     min-width: 40px;
   }
+
+  .filter-table .rank.gold { color: #fde68a; }
 
   .filter-table .window {
     font-family: 'JetBrains Mono', monospace;
@@ -593,12 +915,12 @@
     color: #e9d5ff;
   }
 
-  /* Checklist */
+  /* ========== CHECKLIST ========== */
   .checklist {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
+    border-radius: var(--radius-lg);
+    padding: 26px;
     margin-top: 24px;
   }
 
@@ -606,7 +928,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.5rem;
     letter-spacing: 0.02em;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     color: var(--accent);
   }
 
@@ -619,22 +941,26 @@
 
   .checklist li {
     display: flex;
-    gap: 10px;
+    gap: 11px;
     align-items: flex-start;
-    font-size: 0.92rem;
-    padding: 6px 0;
+    font-size: 0.93rem;
+    padding: 8px 10px;
     cursor: pointer;
     user-select: none;
+    border-radius: 3px;
+    transition: background 0.15s;
   }
+
+  .checklist li:hover { background: rgba(253, 184, 19, 0.05); }
 
   .checklist .box {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 17px;
+    height: 17px;
     border: 2px solid var(--ink-dim);
-    border-radius: 2px;
+    border-radius: 3px;
     flex-shrink: 0;
-    margin-top: 3px;
+    margin-top: 2px;
     position: relative;
     transition: all 0.15s;
   }
@@ -655,17 +981,17 @@
   }
 
   .checklist li.done {
-    opacity: 0.45;
+    opacity: 0.4;
     text-decoration: line-through;
   }
 
-  /* Section heading */
+  /* ========== SECTION HEADING ========== */
   .section-heading {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     letter-spacing: 0.02em;
-    margin: 32px 0 14px;
-    padding-bottom: 8px;
+    margin: 36px 0 16px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
     color: var(--ink);
     display: flex;
@@ -675,10 +1001,18 @@
 
   .section-heading::before {
     content: "";
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     background: var(--accent);
     transform: rotate(45deg);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .section-sub {
+    color: var(--ink-dim);
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+    line-height: 1.55;
   }
 
   /* Event schedule mini cards */
@@ -686,7 +1020,7 @@
     display: flex;
     gap: 14px;
     align-items: center;
-    padding: 10px 0;
+    padding: 11px 0;
     border-bottom: 1px dashed var(--border);
     font-size: 0.92rem;
   }
@@ -698,32 +1032,41 @@
     color: var(--accent);
     font-weight: 700;
     min-width: 130px;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
   }
 
-  /* ======== RESPONSIVE ======== */
+  /* ========== RESPONSIVE ========== */
   @media (max-width: 780px) {
     .wrapper { padding: 20px 16px 80px; }
     .day-nav { grid-template-columns: repeat(5, 1fr); }
-    .day-header { grid-template-columns: 1fr; }
-    .day-stats { gap: 18px; }
+    .day-header { grid-template-columns: 1fr; gap: 18px; }
+    .day-stats { gap: 12px; }
+    .stat { min-width: 70px; padding: 8px 10px; }
     .timeline { padding-left: 36px; }
     .timeline::before { left: 12px; }
     .slot::before { left: -30px; width: 12px; height: 12px; }
-    header { flex-direction: column; align-items: flex-start; }
+    header { grid-template-columns: 1fr; }
+    .weather-card { grid-template-columns: auto 1fr; gap: 16px; }
+    .weather-icon { display: none; }
+    .forecast-grid { grid-template-columns: repeat(9, 1fr); gap: 4px; }
+    .forecast-day { padding: 8px 2px; }
+    .fc-date { font-size: 1rem; }
+    .fc-temp { font-size: 0.66rem; }
   }
 
   @media (max-width: 500px) {
-    .day-nav { grid-template-columns: repeat(5, 1fr); font-size: 0.85rem; }
+    .day-nav { grid-template-columns: repeat(5, 1fr); }
     .day-nav button { min-height: 54px; padding: 6px 2px; }
     .day-nav button .day-num { font-size: 1.2rem; }
-    .day-title { font-size: 2.4rem; }
+    .day-title { font-size: 2.6rem; }
+    .forecast-grid { grid-template-columns: repeat(5, 1fr); }
+    .forecast-day.hide-mobile { display: none; }
   }
 
   /* Footer */
   footer {
     margin-top: 60px;
-    padding-top: 24px;
+    padding-top: 28px;
     border-top: 1px solid var(--border);
     text-align: center;
     font-family: 'JetBrains Mono', monospace;
@@ -734,6 +1077,11 @@
   }
 
   footer span { color: var(--accent); }
+
+  footer .flag {
+    display: inline-block;
+    margin: 0 6px;
+  }
 </style>
 </head>
 <body>
@@ -743,13 +1091,25 @@
   <header>
     <div class="header-left">
       <h1>Operação<br><span>Marathon</span> Boston</h1>
-      <p>Plano de direção · 13–22 abril 2026</p>
+      <div class="subtitle-line">
+        <p>Plano de direção · 13–22 abril 2026</p>
+        <span class="version-tag">v2 · revisado 16 abr</span>
+      </div>
     </div>
     <div class="driver-badge">
       <div class="diamond-icon"></div>
       <span>Alexandre · Uber Pro Diamond</span>
     </div>
   </header>
+
+  <!-- =================== UPDATE BANNER =================== -->
+  <div class="update-banner">
+    <span class="icon">🧊</span>
+    <div class="content">
+      <strong>Revisão · previsão atualizada</strong>
+      Mudança grande: a chuva de <strong style="color:var(--cold)">sexta</strong> saiu do mapa (agora seco e ensolarado). A <strong style="color:var(--cold)">Marathon Monday</strong> virou uma das <strong style="color:var(--cold)">mais frias em décadas</strong> — largada em 28–35°F (-2 a 2°C), máxima 46°F (8°C), vento NW 10–20 mph. Essa mudança <em>aumenta</em> o surge pós-corrida: ninguém vai querer andar no frio depois de 42km.
+    </div>
+  </div>
 
   <!-- =================== DAY NAV =================== -->
   <nav class="day-nav">
@@ -758,11 +1118,11 @@
     <button data-day="d14"><span class="dow">Ter</span><span class="day-num">14</span></button>
     <button data-day="d15"><span class="dow">Qua</span><span class="day-num">15</span></button>
     <button data-day="d16"><span class="dow">Qui</span><span class="day-num">16</span></button>
-    <button data-day="d17" class="tier-1"><span class="dow">Sex</span><span class="day-num">17</span></button>
+    <button data-day="d17" class="tier-gold"><span class="dow">Sex</span><span class="day-num">17</span></button>
     <button data-day="d18"><span class="dow">Sáb</span><span class="day-num">18</span></button>
     <button data-day="d19"><span class="dow">Dom</span><span class="day-num">19</span></button>
-    <button data-day="d20" class="tier-1"><span class="dow">Seg</span><span class="day-num">20</span></button>
-    <button data-day="d21" class="tier-1"><span class="dow">Ter</span><span class="day-num">21</span></button>
+    <button data-day="d20" class="tier-gold"><span class="dow">Seg</span><span class="day-num">20</span></button>
+    <button data-day="d21" class="tier-gold"><span class="dow">Ter</span><span class="day-num">21</span></button>
   </nav>
 
   <!-- =================== OVERVIEW =================== -->
@@ -775,11 +1135,27 @@
       </div>
     </div>
 
+    <!-- Week forecast strip -->
+    <div class="week-forecast">
+      <div class="forecast-title">Previsão · 9 dias</div>
+      <div class="forecast-grid">
+        <div class="forecast-day hide-mobile"><div class="fc-dow">Seg</div><div class="fc-date">13</div><div class="fc-icon">🌤️</div><div class="fc-temp">72° <span class="lo">44°</span></div></div>
+        <div class="forecast-day hot-day hide-mobile"><div class="fc-dow">Ter</div><div class="fc-date">14</div><div class="fc-icon">☀️</div><div class="fc-temp">78° <span class="lo">57°</span></div></div>
+        <div class="forecast-day hide-mobile"><div class="fc-dow">Qua</div><div class="fc-date">15</div><div class="fc-icon">⛅</div><div class="fc-temp">67° <span class="lo">53°</span></div></div>
+        <div class="forecast-day"><div class="fc-dow">Qui</div><div class="fc-date">16</div><div class="fc-icon">⛅</div><div class="fc-temp">68° <span class="lo">57°</span></div></div>
+        <div class="forecast-day hot-day"><div class="fc-dow">Sex</div><div class="fc-date">17</div><div class="fc-icon">☀️</div><div class="fc-temp">67° <span class="lo">51°</span></div></div>
+        <div class="forecast-day"><div class="fc-dow">Sáb</div><div class="fc-date">18</div><div class="fc-icon">🌦️</div><div class="fc-temp">60° <span class="lo">49°</span></div><div class="fc-rain">💧 60%</div></div>
+        <div class="forecast-day"><div class="fc-dow">Dom</div><div class="fc-date">19</div><div class="fc-icon">🌧️</div><div class="fc-temp">62° <span class="lo">36°</span></div><div class="fc-rain">💧 70%</div></div>
+        <div class="forecast-day peak-day cold"><div class="fc-dow">Seg</div><div class="fc-date">20</div><div class="fc-icon">🧊</div><div class="fc-temp">46° <span class="lo">35°</span></div></div>
+        <div class="forecast-day cold"><div class="fc-dow">Ter</div><div class="fc-date">21</div><div class="fc-icon">🥶</div><div class="fc-temp">50° <span class="lo">43°</span></div></div>
+      </div>
+    </div>
+
     <div class="overview-grid">
       <div class="ov-card">
         <h3>Os 3 dias de ouro</h3>
-        <p><strong style="color:var(--accent)">Sex 17</strong> — chuva (75%) + Expo abrindo + chegadas em massa.</p>
-        <p style="margin-top:8px"><strong style="color:var(--accent)">Seg 20</strong> — pico do pós-corrida: surge 3x–5x no perímetro do finish line.</p>
+        <p><strong style="color:var(--accent)">Sex 17</strong> — Expo abrindo + chegadas em massa. (Sem chuva como previsto antes, mas ainda forte pelo evento.)</p>
+        <p style="margin-top:8px"><strong style="color:var(--accent)">Seg 20</strong> — pico do pós-corrida + <strong style="color:var(--cold)">frio intenso</strong> amplifica o surge (corredores não vão andar).</p>
         <p style="margin-top:8px"><strong style="color:var(--accent)">Ter 21</strong> — exodus day. Todo mundo indo embora ao mesmo tempo.</p>
       </div>
 
@@ -788,14 +1164,20 @@
         <div class="event-row"><span class="time">17–19 · 10h–19h</span><span>Expo · Hynes</span></div>
         <div class="event-row"><span class="time">17–19</span><span>Fan Fest · City Hall Plaza</span></div>
         <div class="event-row"><span class="time">Sáb 18 · 8h</span><span>BAA 5K · Boston Common</span></div>
-        <div class="event-row"><span class="time">Seg 20 · 9h06</span><span>Largada da Maratona</span></div>
-        <div class="event-row"><span class="time">Seg 20 · 12h+</span><span>Mile 27 Post-Race Party</span></div>
+        <div class="event-row"><span class="time">Seg 20 · 9h06</span><span>Largada · Hopkinton</span></div>
+        <div class="event-row"><span class="time">Seg 20 · 12h+</span><span>Mile 27 Party</span></div>
       </div>
 
       <div class="ov-card green">
         <h3>Regra de ouro</h3>
-        <p>Priorize <strong style="color:var(--accent)">Logan</strong> em dias de chegada (Qui–Sáb) e saída (Ter–Qua). Use o Airport Queue Priority Diamond pra virar corridas rapidamente.</p>
+        <p>Priorize <strong style="color:var(--accent)">Logan</strong> em dias de chegada (Qui–Sáb) e saída (Ter–Qua). Use Airport Queue Priority Diamond pra virar corridas rapidamente.</p>
         <p style="margin-top:10px">A exceção é Marathon Monday: ouro está em <strong style="color:var(--accent)">Hopkinton de madrugada</strong> e no <strong style="color:var(--accent)">finish line à tarde</strong>.</p>
+      </div>
+
+      <div class="ov-card cold">
+        <h3>🧊 Fator frio · Seg 20</h3>
+        <p>Pode ser a <strong style="color:var(--cold)">maratona mais fria desde 2009</strong>. Largada 28–35°F (-2 a 2°C), vento 10–20 mph. Depois de correr 42km no frio, corredores <strong>não vão andar um metro</strong> pra voltar ao hotel.</p>
+        <p style="margin-top:10px">→ <strong style="color:var(--cold)">Surge pós-corrida fica ainda mais intenso do que o previsto.</strong></p>
       </div>
 
       <div class="ov-card red">
@@ -805,7 +1187,7 @@
     </div>
 
     <h2 class="section-heading">Vantagens Diamond — esta semana</h2>
-    <div class="ov-card" style="padding:22px 24px">
+    <div class="ov-card" style="padding:24px 28px">
       <ul class="perks-list">
         <li><strong>Airport Queue</strong><span>Prioridade de match na fila do Logan — seu maior diferencial da semana</span></li>
         <li><strong>Trip Radar</strong><span>Prioridade em trips selecionadas — força corridas longas</span></li>
@@ -816,7 +1198,7 @@
     </div>
 
     <h2 class="section-heading">Filtro de regiões · 2h/dia</h2>
-    <p style="color:var(--ink-dim);margin-bottom:16px;font-size:0.95rem">Uso cirúrgico. Só ative quando quiser <em>forçar</em> um padrão específico que o algoritmo sozinho não daria.</p>
+    <p class="section-sub">Uso cirúrgico. Só ative quando quiser <em>forçar</em> um padrão específico que o algoritmo sozinho não daria.</p>
 
     <table class="filter-table">
       <thead>
@@ -826,11 +1208,11 @@
       </thead>
       <tbody>
         <tr>
-          <td class="rank">1</td>
+          <td class="rank gold">1</td>
           <td><strong>Seg 20</strong></td>
           <td class="window">13h30–15h30</td>
           <td class="region">Boston / Brookline / Newton</td>
-          <td>Pico do retorno da prova. Surge 3x–5x garantido. Evitar ser jogado pra Cape Cod.</td>
+          <td>Pico do retorno da prova. Frio amplifica surge. Surge 3x–5x+ garantido. Evitar ser jogado pra Cape Cod.</td>
         </tr>
         <tr>
           <td class="rank">2</td>
@@ -851,7 +1233,7 @@
           <td><strong>Sex 17</strong></td>
           <td class="window">19h00–21h00</td>
           <td class="region">Boston / Brookline / Newton</td>
-          <td>Jantar + Fan Fest fechando + chuva = surge enorme no centro.</td>
+          <td>Jantar + Fan Fest fechando. Sem a chuva, surge menor que o previsto, mas ainda vale a pena.</td>
         </tr>
       </tbody>
     </table>
@@ -867,6 +1249,8 @@
         <li><span class="box"></span>Waze atualizado com fechamentos</li>
         <li><span class="box"></span>Print dos mapas de fechamento de seg</li>
         <li><span class="box"></span>Confirmar reset 12h/24h do Uber</li>
+        <li><span class="box"></span>🧊 Cobertor extra no porta-malas (frio de seg)</li>
+        <li><span class="box"></span>🧊 Verificar fluido do limpador (abaixo de zero)</li>
       </ul>
     </div>
   </div>
@@ -875,7 +1259,7 @@
   <div class="day-page" id="d13">
     <div class="day-header">
       <div class="day-title-block">
-        <span class="day-date">Seg · 13 abril · Hoje</span>
+        <span class="day-date">Seg · 13 abril</span>
         <span class="tier-badge tier-medium">Preparação · Volume Médio</span>
         <h2 class="day-title">Dia Zero</h2>
         <p class="day-subtitle">Semana normal. Dia para revisar o carro, entrar em ritmo e capitalizar o rush do Boston Business District.</p>
@@ -886,10 +1270,18 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item">🌥️ <strong>Nublado · 20°C</strong></span>
-      <span class="weather-item">💧 20% chuva</span>
-      <span class="weather-item">🛫 Demanda Logan: <strong>normal</strong></span>
+    <div class="weather-card warm-day">
+      <div class="weather-icon">🌤️</div>
+      <div class="weather-details">
+        <span><strong>72°F · 22°C</strong></span>
+        <span>💧 <strong>20% chuva</strong></span>
+        <span>Vento leve</span>
+        <span>🛫 Logan: <strong>demanda normal</strong></span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">72°</span>
+        <span class="low">/ 44°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -897,6 +1289,7 @@
         <div class="slot-header">
           <span class="slot-time">05:30 → 09:30</span>
           <span class="slot-zone">Everett · Chelsea · BOS</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Rush matinal + aeroporto</h3>
         <p class="slot-body">Business travelers de segunda são ouro. Aceite <strong>UberX e UberXL</strong> — seu Q5 acomoda. Evite Comfort se a espera for longa.</p>
@@ -906,15 +1299,14 @@
         <div class="slot-header">
           <span class="slot-time">09:30 → 11:00</span>
           <span class="slot-zone">Back Bay · Seaport</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Reposicionamento no business district</h3>
         <p class="slot-body">Rush de reuniões. Ronde Copley, Seaport e South Station.</p>
       </div>
 
       <div class="slot rest">
-        <div class="slot-header">
-          <span class="slot-time">11:00 → 13:00</span>
-        </div>
+        <div class="slot-header"><span class="slot-time">11:00 → 13:00</span></div>
         <h3 class="slot-title">Pausa · Almoço</h3>
         <p class="slot-body">Use o tempo pra checar óleo, pneus e abastecer.</p>
       </div>
@@ -923,6 +1315,7 @@
         <div class="slot-header">
           <span class="slot-time">16:00 → 19:30</span>
           <span class="slot-zone">Financial District → BOS</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Rush vespertino</h3>
         <p class="slot-body">Financial District para os subúrbios (Cambridge, Somerville, Brookline) e corridas de aeroporto.</p>
@@ -935,20 +1328,28 @@
     <div class="day-header">
       <div class="day-title-block">
         <span class="day-date">Ter · 14 abril</span>
-        <span class="tier-badge tier-medium">Volume Médio + Chuva</span>
-        <h2 class="day-title">Dia de Chuva</h2>
-        <p class="day-subtitle">45% de chance de chuva dobra a demanda e ativa surge. Dia mais lucrativo da primeira metade da semana.</p>
+        <span class="tier-badge tier-medium">Volume Médio · Quente</span>
+        <h2 class="day-title">Dia Quente</h2>
+        <p class="day-subtitle">Dia mais quente da semana (78°F / 25°C). Ar-condicionado impecável rende gorjeta.</p>
       </div>
       <div class="day-stats">
-        <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">10–11h</span></div>
+        <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">10h</span></div>
         <div class="stat"><span class="stat-label">Filtro</span><span class="stat-value">—</span></div>
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item warn">🌧️ <strong>Chuva · 21°C</strong></span>
-      <span class="weather-item warn">💧 <strong>45% chuva — surge garantido</strong></span>
-      <span class="weather-item">🛫 Demanda Logan: <strong>normal ↑</strong></span>
+    <div class="weather-card warm-day">
+      <div class="weather-icon">☀️</div>
+      <div class="weather-details">
+        <span class="highlight"><strong>Quente · 78°F (25°C)</strong></span>
+        <span>💧 Seco</span>
+        <span>Confira o A/C do Q5</span>
+        <span>🛫 Logan: <strong>normal</strong></span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">78°</span>
+        <span class="low">/ 57°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -956,18 +1357,20 @@
         <div class="slot-header">
           <span class="slot-time">05:30 → 09:30</span>
           <span class="slot-zone">BOS + comuting</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Aeroporto + rush matinal</h3>
-        <p class="slot-body">Com chuva, surge matinal é praticamente <strong>certo</strong>. Use o Diamond Priority na fila do Logan.</p>
+        <p class="slot-body">Manhã padrão de meio de semana. Use o Diamond Priority na fila do Logan.</p>
       </div>
 
       <div class="slot">
         <div class="slot-header">
           <span class="slot-time">09:30 → 12:00</span>
           <span class="slot-zone">Hotéis · Seaport · Back Bay</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Zona hoteleira de Boston</h3>
-        <p class="slot-body">Business travelers saindo pra reuniões. Curtas mas frequentes com surge de chuva.</p>
+        <p class="slot-body">Business travelers saindo pra reuniões. Curtas mas frequentes.</p>
       </div>
 
       <div class="slot rest">
@@ -979,18 +1382,20 @@
         <div class="slot-header">
           <span class="slot-time">13:30 → 17:00</span>
           <span class="slot-zone">BOS · Downtown</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Expo começa a receber materiais</h3>
         <p class="slot-body">Primeiras chegadas antecipadas de corredores internacionais. Priorize <strong>Logan</strong>.</p>
       </div>
 
-      <div class="slot peak">
+      <div class="slot hot">
         <div class="slot-header">
           <span class="slot-time">17:00 → 20:00</span>
           <span class="slot-zone">Back Bay · Financial</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
-        <h3 class="slot-title">Rush + chuva = surge duplo</h3>
-        <p class="slot-body">A combinação mais lucrativa do dia. Fique no <strong>Back Bay / Financial District</strong>.</p>
+        <h3 class="slot-title">Rush vespertino</h3>
+        <p class="slot-body">Rush normal de terça. Sem o surge da chuva como eu tinha previsto originalmente — volume distribuído.</p>
       </div>
     </div>
   </div>
@@ -1010,10 +1415,17 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item">☀️ <strong>Seco · 20°C</strong></span>
-      <span class="weather-item">💧 15% chuva</span>
-      <span class="weather-item">🛫 Logan: <strong>chegadas começando a aumentar</strong></span>
+    <div class="weather-card">
+      <div class="weather-icon">⛅</div>
+      <div class="weather-details">
+        <span><strong>67°F · 19°C</strong></span>
+        <span>💧 15%</span>
+        <span>🛫 Logan: <strong>chegadas aumentando</strong></span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">67°</span>
+        <span class="low">/ 53°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -1021,6 +1433,7 @@
         <div class="slot-header">
           <span class="slot-time">05:30 → 09:30</span>
           <span class="slot-zone">BOS + rush</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Padrão aeroporto + rush</h3>
         <p class="slot-body">Operação padrão da manhã de meio de semana.</p>
@@ -1030,6 +1443,7 @@
         <div class="slot-header">
           <span class="slot-time">10:00 → 12:00</span>
           <span class="slot-zone">Back Bay</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">One Boston Day</h3>
         <p class="slot-body">Comemoração cívica menor. Circulação extra no Back Bay, sem grandes fechamentos.</p>
@@ -1044,13 +1458,14 @@
         <div class="slot-header">
           <span class="slot-time">14:00 → 18:00</span>
           <span class="slot-zone">Logan · Terminal E</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Primeiras chegadas internacionais</h3>
         <p class="slot-body">Muitos corredores chegam de quarta pra acomodar jet lag. <strong>Posicione-se no Logan a partir das 15h</strong>. Terminal E é internacional.</p>
       </div>
 
       <div class="warn-callout">
-        <strong>Encerrar 19h30.</strong> Você precisa descansar — quinta começa o sprint de 5 dias seguidos intensos.
+        <strong>Encerrar 19h30.</strong> Descanse — quinta começa o sprint de 5 dias seguidos intensos.
       </div>
     </div>
   </div>
@@ -1070,10 +1485,17 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item">⛅ <strong>17°C</strong></span>
-      <span class="weather-item">💧 25% chuva</span>
-      <span class="weather-item warn">🛫 Logan: <strong>voos transatlânticos 10h–13h</strong></span>
+    <div class="weather-card">
+      <div class="weather-icon">⛅</div>
+      <div class="weather-details">
+        <span><strong>68°F · 20°C</strong></span>
+        <span>💧 25%</span>
+        <span class="warn">🛫 Transatlânticos 10h–13h</span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">68°</span>
+        <span class="low">/ 57°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -1081,6 +1503,7 @@
         <div class="slot-header">
           <span class="slot-time">05:00 → 09:00</span>
           <span class="slot-zone">BOS · Back Bay</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Rush + corredores do oeste/Europa</h3>
         <p class="slot-body">Rush matinal normal + primeiros voos internacionais de corredores.</p>
@@ -1090,6 +1513,7 @@
         <div class="slot-header">
           <span class="slot-time">09:00 → 12:00</span>
           <span class="slot-zone">LOGAN · PRIORIDADE</span>
+          <span class="slot-heat heat-4">Peak</span>
         </div>
         <h3 class="slot-title">Transatlânticos aterrissam</h3>
         <p class="slot-body">Voos de <strong>Londres (BA, Virgin), Paris, Frankfurt, Dublin</strong> pousam entre 10h e 13h. Terminal E internacional. Use Airport Queue Priority Diamond.</p>
@@ -1104,6 +1528,7 @@
         <div class="slot-header">
           <span class="slot-time">13:00 → 17:00</span>
           <span class="slot-zone">Logan ↔ Back Bay</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Check-ins em massa</h3>
         <p class="slot-body">Alterne entre Logan e hotéis da Back Bay/Copley. Shakeout runs começam a rolar.</p>
@@ -1113,6 +1538,7 @@
         <div class="slot-header">
           <span class="slot-time">17:00 → 20:00</span>
           <span class="slot-zone">North End · Seaport</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Jantar cedo dos corredores</h3>
         <p class="slot-body">Corredores comem cedo antes da prova. <strong>Back Bay, North End (massas = carb loading), Seaport</strong> são as zonas quentes.</p>
@@ -1126,8 +1552,8 @@
       <div class="day-title-block">
         <span class="day-date">Sex · 17 abril · Expo + Fan Fest abrem</span>
         <span class="tier-badge tier-peak">★ Dia de Ouro ★</span>
-        <h2 class="day-title">Tempestade<br>Perfeita</h2>
-        <p class="day-subtitle">Chuva 75% + Expo abrindo + chegadas + sexta-feira. Um dos 3 dias mais lucrativos do ano.</p>
+        <h2 class="day-title">Grande Sexta</h2>
+        <p class="day-subtitle">Expo abrindo + chegadas em massa + sexta-feira. <em>Nota: chuva prevista originalmente foi retirada da previsão — ainda é dia forte, mas sem o bônus do surge de chuva.</em></p>
       </div>
       <div class="day-stats">
         <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">12h</span></div>
@@ -1135,10 +1561,25 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item warn">⛈️ <strong>75% chuva · 24°C</strong></span>
-      <span class="weather-item warn">⚡ <strong>Surge esperado alto o dia todo</strong></span>
-      <span class="weather-item">🛫 Logan: <strong>pico de chegadas</strong></span>
+    <div class="weather-card warm-day">
+      <div class="weather-icon">☀️</div>
+      <div class="weather-details">
+        <span class="highlight"><strong>Sol · 67°F (19°C)</strong></span>
+        <span>💧 Seco · revisado</span>
+        <span class="warn">🛫 Logan: <strong>pico de chegadas</strong></span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">67°</span>
+        <span class="low">/ 51°</span>
+      </div>
+    </div>
+
+    <div class="update-banner" style="margin: 0 0 28px">
+      <span class="icon">📝</span>
+      <div class="content">
+        <strong>Mudança na previsão</strong>
+        Na minha primeira versão eu previa 75% de chuva hoje, o que dobraria o surge. A nova previsão é de sol. Volume forte pelo evento e chegadas continua, mas <strong>gerencie expectativa</strong> de ganho — o multiplicador da chuva não virá.
+      </div>
     </div>
 
     <div class="timeline">
@@ -1146,6 +1587,7 @@
         <div class="slot-header">
           <span class="slot-time">04:30 → 08:30</span>
           <span class="slot-zone">BOS · Terminal E</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Redeyes europeus</h3>
         <p class="slot-body">Voos matinais internacionais chegam cedo. Capitalize a fila Diamond.</p>
@@ -1155,9 +1597,10 @@
         <div class="slot-header">
           <span class="slot-time">08:30 → 11:00</span>
           <span class="slot-zone">Back Bay · Copley · Hynes</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Hotéis → Expo</h3>
-        <p class="slot-body">Corridas curtas mas <strong>muitas</strong>, e com chuva todas vão surgar. Hynes Convention Center é o centro de gravidade.</p>
+        <p class="slot-body">Corridas curtas mas <strong>muitas</strong>. Hynes Convention Center é o centro de gravidade quando a Expo abre às 10h.</p>
       </div>
 
       <div class="slot rest">
@@ -1169,6 +1612,7 @@
         <div class="slot-header">
           <span class="slot-time">12:30 → 16:00</span>
           <span class="slot-zone">Logan + Expo ↔ Hotéis</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Voos do meio-dia</h3>
         <p class="slot-body">Contingente grande aterrissa. Alterne com corridas curtas Expo↔hotéis.</p>
@@ -1176,21 +1620,22 @@
 
       <div class="slot rest">
         <div class="slot-header"><span class="slot-time">16:00 → 18:30</span></div>
-        <h3 class="slot-title">Pausa forçada</h3>
-        <p class="slot-body">Trânsito horrível com chuva + Fan Fest abrindo 15h + rush. Coma, descanse o corpo e a cabeça.</p>
+        <h3 class="slot-title">Pausa</h3>
+        <p class="slot-body">Sem chuva hoje, o trânsito fica melhor que o esperado. Ainda assim, use a pausa estrategicamente antes do pico da noite.</p>
       </div>
 
       <div class="slot peak">
         <div class="slot-header">
           <span class="slot-time">18:30 → 22:30</span>
           <span class="slot-zone">North End · Seaport · City Hall Plaza</span>
+          <span class="slot-heat heat-4">Peak</span>
         </div>
         <h3 class="slot-title">Pico de jantar + Fan Fest fechando</h3>
         <p class="slot-body">Famílias saindo pra jantar em <strong>North End, Seaport, Back Bay, Cambridge</strong>. Fan Fest fecha 20h — pico de pedidos saindo do City Hall Plaza pros hotéis.</p>
         <div class="filter-callout">
-          <span class="filter-label">🎯 Filtro 2h · Uso #4 da semana</span>
+          <span class="filter-label">Filtro 2h · Uso #4 da semana</span>
           <strong>19h00 → 21h00 · Região: Boston / Brookline / Newton</strong><br>
-          Chuva + Fan Fest fechando + jantar de sexta = surge gigante no centro. Trave a região pra não ser jogado pra subúrbios sem surge.
+          Jantar + Fan Fest fechando ainda gera surge decente no centro. Trave a região pra não ser jogado pra subúrbios sem surge. <em>Impacto menor que o previsto antes (sem chuva), mas ainda vale.</em>
         </div>
       </div>
     </div>
@@ -1201,9 +1646,9 @@
     <div class="day-header">
       <div class="day-title-block">
         <span class="day-date">Sáb · 18 abril · BAA 5K + Expo</span>
-        <span class="tier-badge tier-high">Volume Alto</span>
+        <span class="tier-badge tier-high">Volume Alto · Chuva</span>
         <h2 class="day-title">Dia Cheio</h2>
-        <p class="day-subtitle">Pico de chegadas internacionais. BAA 5K de manhã e Fan Fest o dia todo. Ruas do Common fechadas pela manhã.</p>
+        <p class="day-subtitle">Pico de chegadas internacionais. BAA 5K de manhã. Chance de pancadas ao longo do dia = surge extra.</p>
       </div>
       <div class="day-stats">
         <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">12h</span></div>
@@ -1211,10 +1656,18 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item">🌤️ <strong>A confirmar</strong></span>
-      <span class="weather-item">🏃 <strong>BAA 5K · 8h · Boston Common</strong></span>
-      <span class="weather-item warn">🚧 Centro fechado 7h–10h (5K)</span>
+    <div class="weather-card rain-day">
+      <div class="weather-icon">🌦️</div>
+      <div class="weather-details">
+        <span><strong>60°F · 15°C</strong></span>
+        <span class="warn"><strong>💧 60% pancadas</strong></span>
+        <span>🏃 BAA 5K · 8h · Boston Common</span>
+        <span class="warn">🚧 Centro fechado 7h–10h</span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">60°</span>
+        <span class="low">/ 49°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -1226,6 +1679,7 @@
         <div class="slot-header">
           <span class="slot-time">05:00 → 08:00</span>
           <span class="slot-zone">BOS · Seaport</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Antes do fechamento do Common</h3>
         <p class="slot-body">Operação focada em Logan e Seaport enquanto o 5K não começa.</p>
@@ -1235,15 +1689,17 @@
         <div class="slot-header">
           <span class="slot-time">08:00 → 11:00</span>
           <span class="slot-zone">LOGAN</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Chegadas internacionais de sábado</h3>
-        <p class="slot-body">Voos do <strong>Brasil (LATAM/Azul via NY)</strong>, México, Europa Central. Contingente grande.</p>
+        <p class="slot-body">Voos do <strong>Brasil (LATAM/Azul via NY)</strong>, México, Europa Central. Contingente grande. Se começar a chover, surge sobe imediatamente.</p>
       </div>
 
       <div class="slot hot">
         <div class="slot-header">
           <span class="slot-time">11:00 → 13:00</span>
           <span class="slot-zone">Boston Common · Expo · Fan Fest</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">5K termina, Fan Fest abre</h3>
         <p class="slot-body">Corredores do 5K voltando aos hotéis. Famílias indo pra Expo (abre 9h) e Fan Fest (abre 10h).</p>
@@ -1258,6 +1714,7 @@
         <div class="slot-header">
           <span class="slot-time">14:30 → 19:00</span>
           <span class="slot-zone">Logan · Expo · Fan Fest</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Mix aeroporto + eventos</h3>
         <p class="slot-body">Fan Fest atinge pico com entretenimento ao vivo. Use <strong>Extra Destination Mode</strong> pra voltar a Boston após corrida longa.</p>
@@ -1267,9 +1724,10 @@
         <div class="slot-header">
           <span class="slot-time">19:00 → 22:00</span>
           <span class="slot-zone">North End · Seaport · Back Bay</span>
+          <span class="slot-heat heat-4">Peak</span>
         </div>
         <h3 class="slot-title">Pico de jantar</h3>
-        <p class="slot-body">Muitos grupos grandes pra restaurantes — <strong>UberXL rende mais</strong>.</p>
+        <p class="slot-body">Muitos grupos grandes pra restaurantes — <strong>UberXL rende mais</strong>. Se chover, surge dispara.</p>
       </div>
     </div>
   </div>
@@ -1279,9 +1737,9 @@
     <div class="day-header">
       <div class="day-title-block">
         <span class="day-date">Dom · 19 abril · Véspera</span>
-        <span class="tier-badge tier-medium">Volume Médio</span>
+        <span class="tier-badge tier-medium">Volume Médio · Frente fria</span>
         <h2 class="day-title">Véspera</h2>
-        <p class="day-subtitle">Corredores dormem cedo. Dia com dois picos bem claros. Você também precisa dormir cedo — segunda é maratona.</p>
+        <p class="day-subtitle">Frente fria passando com chuva e depois ventando. Corredores dormem cedo. Dia de dois picos e encerramento antecipado.</p>
       </div>
       <div class="day-stats">
         <div class="stat"><span class="stat-label">Meta</span><span class="stat-value">10–11h</span></div>
@@ -1289,9 +1747,17 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item">🌤️ <strong>A confirmar</strong></span>
-      <span class="weather-item warn">😴 <strong>Encerrar 20h30 — descanso obrigatório</strong></span>
+    <div class="weather-card rain-day">
+      <div class="weather-icon">🌧️</div>
+      <div class="weather-details">
+        <span><strong>62°F · 17°C</strong></span>
+        <span class="warn"><strong>💧 70% chuva</strong></span>
+        <span class="cold-hl">❄️ Frente fria entrando à tarde</span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">62°</span>
+        <span class="low">/ 36°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -1299,18 +1765,20 @@
         <div class="slot-header">
           <span class="slot-time">06:00 → 10:00</span>
           <span class="slot-zone">LOGAN</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Último grande dia de chegadas</h3>
-        <p class="slot-body">Espectadores, famílias, mídia. Último dia de afluxo significativo.</p>
+        <p class="slot-body">Espectadores, famílias, mídia. Último dia de afluxo significativo. Se chover, surge sobe em todo o dia.</p>
       </div>
 
       <div class="slot">
         <div class="slot-header">
           <span class="slot-time">10:00 → 13:00</span>
           <span class="slot-zone">Expo · Fan Fest</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Último dia da Expo</h3>
-        <p class="slot-body">Expo fecha 18h. Corredores fazendo shakeout runs e passeios leves.</p>
+        <p class="slot-body">Expo fecha 18h. Corredores fazendo shakeout runs e passeios leves — mas a chuva vai segurar muita gente nos hotéis.</p>
       </div>
 
       <div class="slot rest">
@@ -1322,22 +1790,24 @@
         <div class="slot-header">
           <span class="slot-time">14:30 → 18:00</span>
           <span class="slot-zone">Hynes Convention Center</span>
+          <span class="slot-heat heat-4">Peak</span>
         </div>
         <h3 class="slot-title">Expo fecha às 18h = surge explosivo</h3>
-        <p class="slot-body">Corredores voltando pros hotéis com <strong>sacolas pesadas</strong>. Posicione-se perto do Hynes Convention Center <strong>às 17h45</strong>.</p>
+        <p class="slot-body">Corredores voltando pros hotéis com <strong>sacolas pesadas</strong>. Posicione-se perto do Hynes Convention Center <strong>às 17h45</strong>. Chuva + sacolas + fim de evento = surge alto.</p>
       </div>
 
       <div class="slot hot">
         <div class="slot-header">
           <span class="slot-time">18:00 → 20:30</span>
           <span class="slot-zone">North End · Back Bay</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Jantar pré-prova</h3>
         <p class="slot-body">Pico curto mas intenso. Depois disso a cidade esvazia — pare antes das 21h.</p>
       </div>
 
       <div class="warn-callout">
-        <strong>⚠️ IMPORTANTE:</strong> A partir das 4h de segunda muitas ruas fecham. <strong>Beacon Street (Brookline) fecha hoje às 16h.</strong> Durma cedo e posicione o carro em local acessível.
+        <strong>⚠️ IMPORTANTE:</strong> A partir das 4h de segunda muitas ruas fecham. <strong>Beacon Street (Brookline) fecha hoje às 16h.</strong> Frio intenso entrando durante a madrugada — posicione o carro em local seguro e <strong>durma cedo</strong>.
       </div>
     </div>
   </div>
@@ -1349,17 +1819,35 @@
         <span class="day-date">Seg · 20 abril · Patriots' Day 🏃</span>
         <span class="tier-badge tier-peak">★★ Marathon Monday ★★</span>
         <h2 class="day-title">Race Day</h2>
-        <p class="day-subtitle">Estratégia totalmente diferente. Ouro de manhã em Hopkinton, deserto ao meio-dia, pico absoluto à tarde no finish line.</p>
+        <p class="day-subtitle">Estratégia totalmente diferente + fator frio extremo. Ouro de manhã em Hopkinton, deserto ao meio-dia, pico absoluto à tarde no finish line.</p>
       </div>
       <div class="day-stats">
         <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">12h</span></div>
         <div class="stat"><span class="stat-label">Filtro</span><span class="stat-value hot">2×2h</span></div>
+        <div class="stat"><span class="stat-label">Frio</span><span class="stat-value cold">46°F</span></div>
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item warn">🚧 <strong>Fechamentos massivos — ver abaixo</strong></span>
-      <span class="weather-item">🏁 Largada 9h06 · massa 10h–10h30</span>
+    <div class="weather-card cold-day">
+      <div class="weather-icon">🧊</div>
+      <div class="weather-details">
+        <span class="cold-hl"><strong>FRIO · 46°F · 8°C</strong></span>
+        <span class="cold-hl">Largada: 28–35°F (-2 a 2°C)</span>
+        <span>💨 Vento NW 10–20 mph</span>
+        <span>☁️ Seco, nublado → parcialmente ensolarado</span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">46°</span>
+        <span class="low">/ 35°</span>
+      </div>
+    </div>
+
+    <div class="update-banner">
+      <span class="icon">🧊</span>
+      <div class="content">
+        <strong>Fator frio · amplificação do surge</strong>
+        Pode ser a maratona mais fria desde 2009. <strong>Depois de correr 42km num frio desses, ninguém vai andar um metro extra.</strong> O surge no perímetro do finish line vai ser ainda mais agressivo que o previsto originalmente. Espectadores também vão querer transporte imediato pra sair do frio. <em>Leve um cobertor extra no carro — corredores vão entrar tremendo.</em>
+      </div>
     </div>
 
     <div class="warn-callout" style="margin-bottom:24px">
@@ -1376,11 +1864,12 @@
         <div class="slot-header">
           <span class="slot-time">04:30 → 07:30</span>
           <span class="slot-zone">Back Bay → HOPKINTON</span>
+          <span class="slot-heat heat-5">Apex</span>
         </div>
         <h3 class="slot-title">Hopkinton: era do ouro</h3>
-        <p class="slot-body">Leve corredores dos hotéis de Boston até o Athletes' Village. <strong>Viagens longas (40+ km), surge absurdo</strong>. Ruas em Hopkinton fecham 6h30 — última entrega precisa ser 6h15. Após 7h, reposicione pra pegar famílias/espectadores indo pros pontos de torcida.</p>
+        <p class="slot-body">Leve corredores dos hotéis de Boston até o Athletes' Village. <strong>Viagens longas (40+ km), surge absurdo</strong>. Com o frio, mais corredores vão de carro em vez do ônibus oficial. Ruas em Hopkinton fecham 6h30 — última entrega precisa ser 6h15.</p>
         <div class="filter-callout">
-          <span class="filter-label">🎯 Filtro 2h · Uso #3 da semana</span>
+          <span class="filter-label">Filtro 2h · Uso #3 da semana</span>
           <strong>05h00 → 07h00 · Região: Metro Southwest</strong><br>
           Força o app a te dar corridas longas Boston → Hopkinton/Framingham. Sem filtro, corre o risco de pegar corrida curta dentro de Back Bay na hora do ouro.
         </div>
@@ -1389,16 +1878,18 @@
       <div class="slot hot">
         <div class="slot-header">
           <span class="slot-time">07:30 → 10:00</span>
-          <span class="slot-zone">Pontos MBTA: Ashland · Framingham · Wellesley · Natick</span>
+          <span class="slot-zone">Ashland · Framingham · Wellesley · Natick</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Espectadores indo pros pontos de torcida</h3>
-        <p class="slot-body">Muita demanda, ruas abertas nessas zonas até os corredores chegarem.</p>
+        <p class="slot-body">Muita demanda, ruas abertas nessas zonas até os corredores chegarem. Com o frio, menos gente caminha até os pontos = mais Uber.</p>
       </div>
 
       <div class="slot">
         <div class="slot-header">
           <span class="slot-time">10:00 → 12:30</span>
           <span class="slot-zone">Cambridge · Somerville · Waltham · Newton norte</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Janela complicada — subúrbios periféricos</h3>
         <p class="slot-body">Muitas ruas fechadas. Melhor posicionamento é <strong>Logan (saídas)</strong> ou subúrbios norte. <strong>EVITE</strong> Back Bay, Kenmore, Brookline.</p>
@@ -1407,20 +1898,21 @@
       <div class="slot rest">
         <div class="slot-header"><span class="slot-time">12:30 → 13:30</span></div>
         <h3 class="slot-title">Pausa estratégica</h3>
-        <p class="slot-body">Coma forte. A partir das 13h começa o retorno gigantesco.</p>
+        <p class="slot-body">Coma forte. Aqueça o motor. A partir das 13h começa o retorno gigantesco.</p>
       </div>
 
       <div class="slot peak">
         <div class="slot-header">
           <span class="slot-time">13:30 → 17:30</span>
           <span class="slot-zone">Arlington St · Stuart St · Park Square</span>
+          <span class="slot-heat heat-5">Apex</span>
         </div>
-        <h3 class="slot-title">PICO ABSOLUTO · Pós-corrida</h3>
-        <p class="slot-body">Corredores terminando (primeiros 11h30, massa 13h–16h) precisam voltar aos hotéis — <strong>a maioria literalmente não consegue andar</strong>. Family Meeting Area: Stuart Street entre Berkeley e Clarendon. Posicione-se nas <strong>bordas do perímetro fechado</strong>. <strong>Surge 3x–5x é comum.</strong></p>
+        <h3 class="slot-title">PICO ABSOLUTO · Pós-corrida + frio</h3>
+        <p class="slot-body">Corredores terminando (primeiros 11h30, massa 13h–16h) precisam voltar aos hotéis — <strong>com frio de 46°F e vento, ninguém anda NADA</strong>. Family Meeting Area: Stuart Street entre Berkeley e Clarendon. Posicione-se nas <strong>bordas do perímetro fechado</strong>. <strong>Surge 3x–5x+ é quase certo hoje</strong> por causa do frio.</p>
         <div class="filter-callout">
-          <span class="filter-label">🎯 Filtro 2h · USO #1 DA SEMANA — MAIS VALIOSO</span>
+          <span class="filter-label">Filtro 2h · USO #1 DA SEMANA — MAIS VALIOSO</span>
           <strong>13h30 → 15h30 · Região: Boston / Brookline / Newton</strong><br>
-          Te trava no perímetro do finish line justamente quando o surge explode. Sem filtro, o app pode te mandar pra Cape Cod bem no momento que o centro paga 3x–5x. <strong>Essas 2h podem valer uma semana inteira de trabalho normal.</strong>
+          Te trava no perímetro do finish line justamente quando o surge explode. Sem filtro, o app pode te mandar pra Cape Cod bem no momento que o centro paga 3x–5x. <strong>Com o frio amplificando tudo, essas 2h podem valer mais que uma semana inteira de trabalho normal.</strong>
         </div>
       </div>
 
@@ -1428,9 +1920,10 @@
         <div class="slot-header">
           <span class="slot-time">17:30 → 20:30</span>
           <span class="slot-zone">Cidade toda · City Hall Plaza</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Comemorações + Mile 27 Party</h3>
-        <p class="slot-body">Ruas reabrindo gradualmente. Jantares de comemoração em toda a cidade. Show do <strong>Couch às 18h</strong> no City Hall Plaza.</p>
+        <p class="slot-body">Ruas reabrindo gradualmente. Jantares de comemoração em toda a cidade. Show do <strong>Couch às 18h</strong> no City Hall Plaza — mas com o frio, muita gente vai preferir restaurantes fechados.</p>
       </div>
 
       <div class="slot rest">
@@ -1448,7 +1941,7 @@
         <span class="day-date">Ter · 21 abril · Exodus</span>
         <span class="tier-badge tier-peak">★ Dia de Ouro ★</span>
         <h2 class="day-title">Exodus Day</h2>
-        <p class="day-subtitle">Todo mundo indo embora. Pode ser o dia mais lucrativo do ano. Hotéis despejando hóspedes o dia todo, voos internacionais à tarde/noite.</p>
+        <p class="day-subtitle">Todo mundo indo embora. Pode ser o dia mais lucrativo do ano. Hotéis despejando hóspedes o dia todo, voos internacionais à tarde/noite. Ainda frio.</p>
       </div>
       <div class="day-stats">
         <div class="stat"><span class="stat-label">Meta</span><span class="stat-value hot">12h</span></div>
@@ -1456,9 +1949,17 @@
       </div>
     </div>
 
-    <div class="weather-bar">
-      <span class="weather-item warn">🛫 <strong>PICO ABSOLUTO DO LOGAN</strong></span>
-      <span class="weather-item">🏨 Check-outs o dia todo</span>
+    <div class="weather-card cold-day">
+      <div class="weather-icon">🥶</div>
+      <div class="weather-details">
+        <span class="cold-hl"><strong>Frio · 50°F · 10°C</strong></span>
+        <span class="warn">🛫 <strong>PICO ABSOLUTO DO LOGAN</strong></span>
+        <span>🏨 Check-outs o dia todo</span>
+      </div>
+      <div class="weather-temp">
+        <span class="big">50°</span>
+        <span class="low">/ 43°</span>
+      </div>
     </div>
 
     <div class="timeline">
@@ -1466,11 +1967,12 @@
         <div class="slot-header">
           <span class="slot-time">04:00 → 08:00</span>
           <span class="slot-zone">Back Bay · Copley → LOGAN</span>
+          <span class="slot-heat heat-5">Apex</span>
         </div>
         <h3 class="slot-title">Pico do ano · Voos matinais</h3>
         <p class="slot-body">Voos internacionais matinais + business travelers. Fique concentrado em <strong>Back Bay/Copley → Logan</strong>. Se você agendou Reserve trips na véspera, esse é o momento.</p>
         <div class="filter-callout">
-          <span class="filter-label">🎯 Filtro 2h · Uso #2 da semana</span>
+          <span class="filter-label">Filtro 2h · Uso #2 da semana</span>
           <strong>05h00 → 07h00 · Região: East Boston</strong><br>
           Força loop <em>hotel → Logan</em>. Combinado com Airport Queue Priority Diamond, você pega a fila curta na volta e emenda próxima corrida saindo do aeroporto quase instantaneamente.
         </div>
@@ -1480,6 +1982,7 @@
         <div class="slot-header">
           <span class="slot-time">08:00 → 11:00</span>
           <span class="slot-zone">LOGAN · Hotéis</span>
+          <span class="slot-heat heat-4">Peak</span>
         </div>
         <h3 class="slot-title">Check-outs em horário nobre (11h)</h3>
         <p class="slot-body">Continua intenso. Use <strong>Airport Queue Priority Diamond</strong> pra pegar voltas do Logan quando a fila estiver curta.</p>
@@ -1494,6 +1997,7 @@
         <div class="slot-header">
           <span class="slot-time">12:30 → 16:30</span>
           <span class="slot-zone">Logan ↔ Hotéis</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Voos da tarde</h3>
         <p class="slot-body">Fluxo constante. Alterne aeroporto ↔ hotéis.</p>
@@ -1503,6 +2007,7 @@
         <div class="slot-header">
           <span class="slot-time">16:30 → 19:00</span>
           <span class="slot-zone">Rush + Logan</span>
+          <span class="slot-heat heat-3">Hot</span>
         </div>
         <h3 class="slot-title">Rush + voos noturnos internacionais</h3>
         <p class="slot-body">LATAM, British, Lufthansa saem ~20h–22h. Combinação rush + voos = surge.</p>
@@ -1512,6 +2017,7 @@
         <div class="slot-header">
           <span class="slot-time">19:00 → 21:00</span>
           <span class="slot-zone">BOS · Centro</span>
+          <span class="slot-heat heat-2">Mid</span>
         </div>
         <h3 class="slot-title">Últimos voos + turistas</h3>
         <p class="slot-body">Business travelers normais + últimos turistas indo embora.</p>
@@ -1521,7 +2027,8 @@
 
   <!-- ================== FOOTER ================== -->
   <footer>
-    <p>Boa semana, Alexandre · <span>boas corridas 🏁</span></p>
+    <p>Boa semana, Alexandre · <span class="flag">🇧🇷</span> · <span>boas corridas 🏁</span></p>
+    <p style="margin-top:8px;opacity:0.5">v2 · revisado 16 abr · previsão atualizada</p>
   </footer>
 
 </div>
@@ -1547,6 +2054,18 @@
     li.addEventListener('click', () => {
       li.classList.toggle('done');
     });
+  });
+
+  // Keyboard navigation (arrow keys)
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const active = document.querySelector('.day-nav button.active');
+    const allBtns = Array.from(buttons);
+    const idx = allBtns.indexOf(active);
+    let newIdx = idx;
+    if (e.key === 'ArrowRight' && idx < allBtns.length - 1) newIdx = idx + 1;
+    if (e.key === 'ArrowLeft' && idx > 0) newIdx = idx - 1;
+    if (newIdx !== idx) allBtns[newIdx].click();
   });
 </script>
 </body>
