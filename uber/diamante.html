@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint Diamante — Uber Pro · v4 · 28–31 jul 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08070c;
+    --bg-elev:#100f18;
+    --bg-card:#16151f;
+    --bg-card-hi:#1c1a27;
+    --ink:#ecebf5;
+    --ink-dim:#8a869c;
+    --ink-dimmer:#565269;
+    --diamond:#7a67e0;
+    --diamond-soft:#b3a5ff;
+    --ice:#7dd3fc;
+    --gold:#f5a623;
+    --gold-soft:#ffd07a;
+    --red:#e5484d;
+    --red-soft:#ff9ca0;
+    --green:#30a46c;
+    --green-soft:#7ee2b0;
+    --border:#262436;
+    --border-soft:#1c1a28;
+    --radius:4px;
+    --radius-lg:10px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+  html,body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Fraunces',Georgia,serif;font-size:17px;line-height:1.55;
+    overflow-x:hidden;min-height:100vh;
+  }
+
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      radial-gradient(ellipse 800px 420px at 12% 0%, rgba(122,103,224,.10) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 88% 96%, rgba(125,211,252,.07) 0%, transparent 60%),
+      radial-gradient(ellipse 420px 300px at 50% 45%, rgba(245,166,35,.035) 0%, transparent 60%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrapper{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:30px 22px 110px}
+
+  /* ===== HEADER ===== */
+  header{
+    border-bottom:2px solid var(--diamond);padding-bottom:18px;margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;
+  }
+  header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,4.2rem);line-height:.88;letter-spacing:.012em}
+  header h1 em{font-style:normal;color:var(--diamond-soft)}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--ink-dimmer);margin-bottom:10px;
+  }
+  .header-right{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;
+    color:var(--ink-dim);text-align:right;line-height:1.9;text-transform:uppercase;
+  }
+  .header-right b{color:var(--gold-soft);font-weight:500}
+
+  /* ===== TABS ===== */
+  .day-nav{
+    position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+    padding:14px 0 12px;margin-bottom:26px;
+    background:linear-gradient(to bottom,var(--bg) 72%,transparent);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .day-nav::-webkit-scrollbar{display:none}
+  .day-nav button{
+    flex:0 0 auto;background:var(--bg-card);border:1px solid var(--border);color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:9px 14px;border-radius:var(--radius);cursor:pointer;transition:all .16s ease;position:relative;
+  }
+  .day-nav button:hover{background:var(--bg-card-hi);color:var(--ink)}
+  .day-nav button.active{background:var(--diamond);border-color:var(--diamond);color:#fff;font-weight:700}
+  .day-nav button:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+  .day-nav button.today::after{content:"";position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  .day-nav button.done{color:var(--ink-dimmer)}
+  .day-nav button.done::after{content:"";position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--green)}
+  .day-nav button.active.done{color:#fff}
+
+  .day-page{display:none;animation:fade .3s ease}
+  .day-page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ===== HERO / SIGNATURE ===== */
+  .gap-hero{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px 22px;margin-bottom:20px}
+  .gap-numbers{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+  .gap-now,.gap-goal{font-family:'Bebas Neue',sans-serif;line-height:.85}
+  .gap-now{font-size:clamp(3.4rem,14vw,5.6rem);color:var(--gold-soft)}
+  .gap-arrow{font-family:'JetBrains Mono',monospace;color:var(--ink-dimmer);font-size:1.4rem}
+  .gap-goal{font-size:clamp(3.4rem,14vw,5.6rem);color:var(--diamond-soft)}
+  .gap-caption{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase}
+  .gap-caption b{color:var(--green-soft);font-weight:500}
+
+  .domino-wrap{margin-top:24px;padding-top:22px;border-top:1px solid var(--border-soft)}
+  .domino-label{
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-dim);margin-bottom:12px;
+  }
+  .domino-label b{color:var(--ink);font-weight:500}
+  .strip{display:grid;grid-template-columns:repeat(50,1fr);gap:2px;padding:10px;background:#0b0a11;border:1px solid var(--border-soft);border-radius:var(--radius)}
+  .cell{aspect-ratio:1/2.1;border-radius:1px;background:var(--red);opacity:.85;transition:background .18s ease,opacity .18s ease}
+  .cell.ok{background:var(--green)}
+  .cell.fresh{background:var(--diamond-soft);opacity:1}
+  .slider-row{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+  input[type=range]{flex:1;min-width:180px;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;background:var(--border);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--diamond-soft);border:3px solid var(--bg);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--diamond-soft);border:3px solid var(--bg);cursor:pointer}
+  input[type=range]:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
+  .sim-out{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--ink-dim);white-space:nowrap;letter-spacing:.04em}
+  .sim-out b{font-size:1.4rem;color:var(--ink);font-weight:700}
+  .sim-out b.hit{color:var(--green-soft)}
+  .sim-note{font-size:.86rem;color:var(--ink-dim);margin-top:12px;font-style:italic;line-height:1.5}
+
+  /* ===== STAT CARDS ===== */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:26px}
+  .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 16px 14px}
+  .stat .k{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dimmer);margin-bottom:6px}
+  .stat .v{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;line-height:.95;color:var(--ink)}
+  .stat .v.gold{color:var(--gold-soft)}
+  .stat .v.ice{color:var(--ice)}
+  .stat .v.green{color:var(--green-soft)}
+  .stat .s{font-size:.82rem;color:var(--ink-dim);margin-top:4px;line-height:1.4}
+  .stat .s b{color:var(--ink)}
+
+  /* ===== SECTIONS ===== */
+  h2{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:.03em;margin:34px 0 4px;display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:var(--border)}
+  .sub{color:var(--ink-dim);font-size:.92rem;margin-bottom:16px}
+
+  /* ===== TIERS ===== */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 4px}
+  .tier{border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 12px;background:var(--bg-card);text-align:center;border-top-width:3px}
+  .tier .k{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dimmer);margin-bottom:5px}
+  .tier .v{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;line-height:.9}
+  .tier .u{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dimmer);margin-top:2px}
+  .tier .s{font-family:'JetBrains Mono',monospace;font-size:.78rem;margin-top:8px;padding-top:8px;border-top:1px solid var(--border-soft);color:var(--ink-dim)}
+  .tier .s b{font-weight:700}
+  .tier.min{border-top-color:var(--red)}
+  .tier.min .v,.tier.min .s b{color:var(--red-soft)}
+  .tier.want{border-top-color:var(--diamond);background:var(--bg-card-hi)}
+  .tier.want .v,.tier.want .s b{color:var(--diamond-soft)}
+  .tier.best{border-top-color:var(--green)}
+  .tier.best .v,.tier.best .s b{color:var(--green-soft)}
+  .tier-legend{font-size:.85rem;color:var(--ink-dim);font-style:italic;margin-top:10px;line-height:1.5}
+
+  /* ===== RESULT (segunda) ===== */
+  .result{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+  .rcell{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 14px 12px}
+  .rcell .k{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dimmer)}
+  .rcell .pair{display:flex;align-items:baseline;gap:9px;margin-top:6px}
+  .rcell .exp{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--ink-dimmer);text-decoration:line-through}
+  .rcell .got{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:.9;color:var(--ink)}
+  .rcell .got.green{color:var(--green-soft)}
+  .rcell .got.red{color:var(--red-soft)}
+  .rcell .s{font-size:.8rem;color:var(--ink-dim);margin-top:5px;line-height:1.4}
+
+  /* ===== TIMELINE ===== */
+  .timeline{position:relative;padding-left:20px;margin-top:6px}
+  .timeline::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--diamond),var(--border) 85%)}
+  .slot{position:relative;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+  .slot::before{content:"";position:absolute;left:-20px;top:20px;width:9px;height:9px;border-radius:50%;background:var(--border);border:2px solid var(--bg)}
+  .slot.hot{border-left-color:var(--gold);background:var(--bg-card-hi)}
+  .slot.hot::before{background:var(--gold)}
+  .slot.peak{border-left-color:var(--diamond);background:linear-gradient(90deg,rgba(122,103,224,.12),var(--bg-card) 60%)}
+  .slot.peak::before{background:var(--diamond-soft)}
+  .slot.rest{opacity:.55}
+  .slot-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .slot-time{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.04em;color:var(--ink)}
+  .slot-zone{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--border);border-radius:20px;padding:2px 9px}
+  .tag3x{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.1em;background:var(--gold);color:#191100;border-radius:20px;padding:3px 9px}
+  .tag-meta{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.08em;background:rgba(122,103,224,.18);color:var(--diamond-soft);border:1px solid rgba(122,103,224,.4);border-radius:20px;padding:3px 9px}
+  .slot h3{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:600;margin-bottom:3px}
+  .slot p{font-size:.9rem;color:var(--ink-dim);line-height:1.5}
+  .slot p b{color:var(--ink);font-weight:600}
+
+  /* ===== CALLOUT ===== */
+  .callout{border-left:3px solid var(--ice);background:rgba(125,211,252,.06);border-radius:var(--radius);padding:14px 16px;margin:16px 0;font-size:.92rem;line-height:1.55}
+  .callout.warn{border-left-color:var(--red);background:rgba(229,72,77,.07)}
+  .callout.good{border-left-color:var(--green);background:rgba(48,163,108,.07)}
+  .callout .ct{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ice);margin-bottom:5px;display:block}
+  .callout.warn .ct{color:var(--red-soft)}
+  .callout.good .ct{color:var(--green-soft)}
+
+  /* ===== CHECKLIST ===== */
+  .checklist{list-style:none;display:grid;gap:8px;margin-top:8px}
+  .checklist li{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px 12px 42px;position:relative;cursor:pointer;font-size:.93rem;transition:all .16s ease;line-height:1.45}
+  .checklist li::before{content:"";position:absolute;left:14px;top:14px;width:15px;height:15px;border:1.5px solid var(--ink-dimmer);border-radius:3px;transition:all .16s ease}
+  .checklist li:hover{background:var(--bg-card-hi)}
+  .checklist li.done{opacity:.45;text-decoration:line-through}
+  .checklist li.done::before{background:var(--green);border-color:var(--green)}
+  .checklist li b{color:var(--gold-soft);font-weight:600}
+  .checklist li.critical{border-color:rgba(229,72,77,.5)}
+  .checklist li.critical b{color:var(--red-soft)}
+
+  /* ===== TABLE ===== */
+  .tbl{width:100%;border-collapse:collapse;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:.78rem}
+  .tbl th{text-align:left;font-weight:500;letter-spacing:.1em;text-transform:uppercase;font-size:.62rem;color:var(--ink-dimmer);padding:8px 10px;border-bottom:1px solid var(--border)}
+  .tbl td{padding:10px;border-bottom:1px solid var(--border-soft);color:var(--ink-dim)}
+  .tbl td:first-child{color:var(--ink);font-weight:500}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .min{color:var(--red-soft)}
+  .tbl .want{color:var(--diamond-soft);font-weight:700}
+  .tbl .best{color:var(--green-soft)}
+  .tbl tr.past td{opacity:.5}
+
+  /* ===== DAY HEADER ===== */
+  .day-head{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:22px}
+  .day-head .dh-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .day-head h2{margin:0;font-size:2.3rem}
+  .day-head h2::after{display:none}
+  .day-head .dh-sub{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dimmer)}
+  .dh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:14px;margin-top:18px;padding-top:16px;border-top:1px solid var(--border-soft)}
+  .dh-grid .k{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dimmer)}
+  .dh-grid .v{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;line-height:1.1;color:var(--ink)}
+  .dh-grid .v.diamond{color:var(--diamond-soft)}
+  .dh-grid .v.gold{color:var(--gold-soft)}
+  .dh-grid .v.green{color:var(--green-soft)}
+
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dimmer);text-align:center}
+  footer span{color:var(--diamond-soft)}
+
+  @media (max-width:560px){
+    html,body{font-size:16px}
+    .wrapper{padding:22px 15px 90px}
+    .strip{grid-template-columns:repeat(25,1fr);gap:2px}
+    .cell{aspect-ratio:1/1.6}
+    .tiers{grid-template-columns:1fr;gap:7px}
+    .tier{display:flex;align-items:center;gap:14px;text-align:left;border-top-width:1px;border-left-width:3px}
+    .tier .k{margin-bottom:0;flex:0 0 78px}
+    .tier .s{margin-top:0;padding-top:0;border-top:none;margin-left:auto}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header>
+  <div class="header-left">
+    <div class="eyebrow">Uber Pro · ciclo 1 mai – 31 jul · v4 · noite completa</div>
+    <h1>Sprint<br><em>Diamante</em></h1>
+  </div>
+  <div class="header-right">
+    Denver metro<br>
+    4 noites · <b>28–31 jul</b><br>
+    Só falta acceptance
+  </div>
+</header>
+
+<nav class="day-nav" id="nav">
+  <button data-day="geral" class="active">Visão geral</button>
+  <button data-day="d27" class="done">Seg 27</button>
+  <button data-day="d28" class="today">Ter 28</button>
+  <button data-day="d29">Qua 29</button>
+  <button data-day="d30">Qui 30</button>
+  <button data-day="d31">Sex 31</button>
+</nav>
+
+<!-- ================= VISÃO GERAL ================= -->
+<section class="day-page active" id="geral">
+
+  <div class="gap-hero">
+    <div class="gap-numbers">
+      <span class="gap-now">55%</span>
+      <span class="gap-arrow">→</span>
+      <span class="gap-goal">85%</span>
+    </div>
+    <div class="gap-caption">Faltam 30 pontos · <b>+8 na segunda com 13 exclusivas</b></div>
+
+    <div class="domino-wrap">
+      <div class="domino-label">
+        <span>A mesa de dominó · <b>55 ✓ / 45 ✗</b></span>
+        <span>verde = aceita · vermelho = recusa · roxo = corrida nova</span>
+      </div>
+      <div class="strip" id="strip"></div>
+      <div class="slider-row">
+        <input type="range" id="sim" min="0" max="60" value="0" aria-label="Corridas exclusivas aceitas a partir de agora">
+        <div class="sim-out"><b id="simPct">55%</b> &nbsp;·&nbsp; <span id="simN">0</span> exclusivas</div>
+      </div>
+      <p class="sim-note">Só conta corrida <strong>exclusiva</strong>. Trip Radar não move nenhuma peça. Densidade medida na noite completa de segunda: <b>0,62 ponto por exclusiva</b>. Arraste até 46 e o 85% aparece.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="k">Exclusivas p/ 85%</div>
+      <div class="v">46</div>
+      <div class="s">Densidade medida: <b>0,62/corrida</b></div>
+    </div>
+    <div class="stat">
+      <div class="k">Por noite (desejado)</div>
+      <div class="v ice">14</div>
+      <div class="s">Mínimo 12 · excepcional 16</div>
+    </div>
+    <div class="stat">
+      <div class="k">Pontos</div>
+      <div class="v green">19</div>
+      <div class="s">981 → 1000 · fecha hoje</div>
+    </div>
+    <div class="stat">
+      <div class="k">Feito na segunda</div>
+      <div class="v green">13/13</div>
+      <div class="s">100% aceitas · <b>começando 4h tarde</b></div>
+    </div>
+  </div>
+
+  <h2>As três faixas</h2>
+  <p class="sub">Todo número aqui é de corrida <em>exclusiva</em> aceita — Trip Radar não entra na conta.</p>
+  <div class="tiers">
+    <div class="tier min"><div class="k">Mínimo</div><div class="v">12</div><div class="u">por noite</div><div class="s">fecha em <b>86%</b> na sexta</div></div>
+    <div class="tier want"><div class="k">Desejado</div><div class="v">14</div><div class="u">por noite</div><div class="s">fecha em <b>88%</b> na sexta</div></div>
+    <div class="tier best"><div class="k">Excepcional</div><div class="v">16</div><div class="u">por noite</div><div class="s">fecha em <b>86%</b> na quinta</div></div>
+  </div>
+  <p class="tier-legend">Na segunda você fez <b>13 exclusivas</b> começando quatro horas atrasado e perdendo três horas em Boulder. 14 por noite não é esforço extra — é o seu ritmo normal com o turno inteiro e ficando no eixo.</p>
+
+  <h2>Checkpoints por noite</h2>
+  <p class="sub">O que o app deve mostrar no fim de cada turno, em cada faixa.</p>
+  <table class="tbl">
+    <thead><tr><th>Fim da noite</th><th class="min">Mínimo</th><th class="want">Desejado</th><th class="best">Excepcional</th></tr></thead>
+    <tbody>
+      <tr class="past"><td>Seg 27</td><td colspan="3">55% — feito (esperado 55%)</td></tr>
+      <tr><td>Ter 28</td><td class="min">63%</td><td class="want">65%</td><td class="best">66%</td></tr>
+      <tr><td>Qua 29</td><td class="min">71%</td><td class="want">74%</td><td class="best">77%</td></tr>
+      <tr><td>Qui 30</td><td class="min">79%</td><td class="want">83%</td><td class="best">86% 🔷</td></tr>
+      <tr><td>Sex 31</td><td class="min">86%</td><td class="want">88%</td><td class="best">livre</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Regras de ouro</h2>
+  <p class="sub">Toque para marcar. A primeira é nova e é a mais cara das seis.</p>
+  <ul class="checklist">
+    <li class="critical"><b>Trip Radar não existe até sexta.</b> É um <em>lance</em>, não uma corrida: você dá Match e pode nem receber. Não conta para o acceptance rate, ocupa você enquanto a exclusiva não te alcança, e metade das vezes nem vira viagem. Custa três vezes.</li>
+    <li><b>Aceite 100% das exclusivas.</b> O valor da corrida não importa até 31 de julho. O ✓ importa.</li>
+    <li><b>Nunca deixe expirar.</b> Pedido que some sozinho conta como recusa.</li>
+    <li class="critical"><b>Volte pro centro na hora, offline.</b> Segunda foi Parker no sul e Boulder no norte — duas exclusivas te jogaram nos extremos e você quase não pisou em downtown. Terminou fora do eixo? Offline imediato, volta dirigindo, online só ao chegar. O tempo vazio custa menos que a hora parada.</li>
+    <li><b>Fique offline pra reposicionar.</b> Offline não é recusa. Terminou longe? Offline, volta pro centro, online.</li>
+    <li><b>Não cancele.</b> Você está em 1% (teto 4%). Dois cancelamentos de emergência no ciclo inteiro, no máximo.</li>
+  </ul>
+
+  <div class="callout good">
+    <span class="ct">Não existe prêmio de consolação</span>
+    Platina exige os <b>mesmos 85%</b> de acceptance rate. Você já tem os outros quatro critérios e passa dos 1000 pontos hoje. Ou seja: quando cruzar 85%, você vai direto para <b>Diamante</b>. Abaixo disso, continua Ouro. O portão é um só.
+  </div>
+
+  <div class="callout warn">
+    <span class="ct">O gargalo real é geografia, não horário</span>
+    Segunda rendeu <b>13 exclusivas</b>, mas concentradas em duas janelas: 19h–21h (3,4/hora) e <b>02h–04h (2,9/hora)</b>. No meio, três horas em Boulder renderam 0,6/hora. O limite não é sua disposição nem o total de horas — é <b>estar no eixo Denver–Aurora quando a oferta sai</b>.
+  </div>
+
+  <h2>Onde dirigir</h2>
+  <p class="sub">Suas zonas de julho, reordenadas por frequência de pedido — não por valor.</p>
+  <table class="tbl">
+    <thead><tr><th>Zona</th><th>Melhor janela</th><th>No sprint</th></tr></thead>
+    <tbody>
+      <tr><td>Denver centro / LoDo</td><td>00h–04h</td><td class="want">Base nº 1</td></tr>
+      <tr><td>Capitol Hill / Cherry Creek</td><td>15h–00h</td><td class="want">Base nº 2</td></tr>
+      <tr><td>Aurora</td><td>19h–00h</td><td>Boa</td></tr>
+      <tr><td>Lakewood</td><td>19h–00h</td><td>Boa</td></tr>
+      <tr><td>Commerce City</td><td>19h–00h</td><td>Só saindo de casa</td></tr>
+      <tr><td>DEN Airport</td><td>19h–00h</td><td>Evitar a fila</td></tr>
+      <tr><td>Boulder / Castle Rock</td><td>04h–07h</td><td>Evitar</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= SEG 27 — RESULTADO ================= -->
+<section class="day-page" id="d27">
+  <div class="day-head">
+    <div class="dh-top">
+      <div><div class="dh-sub">Dia 1 de 5 · encerrado</div><h2>Segunda 27</h2></div>
+    </div>
+    <div class="dh-grid">
+      <div><div class="k">Turno real</div><div class="v">19h→05h</div></div>
+      <div><div class="k">Corridas</div><div class="v">19</div></div>
+      <div><div class="k">Acceptance</div><div class="v green">55%</div></div>
+      <div><div class="k">Ganho</div><div class="v">$285</div></div>
+    </div>
+  </div>
+
+  <h2>Esperado × obtido</h2>
+  <p class="sub">A meta que importava era a porcentagem. Ela foi batida.</p>
+  <div class="result">
+    <div class="rcell">
+      <div class="k">Acceptance rate</div>
+      <div class="pair"><span class="exp">55%</span><span class="got green">55%</span></div>
+      <div class="s">Exato no checkpoint. +8 pontos em uma noite.</div>
+    </div>
+    <div class="rcell">
+      <div class="k">Exclusivas</div>
+      <div class="pair"><span class="exp">13</span><span class="got green">13/13</span></div>
+      <div class="s">Aceitou 100% delas — e bateu a meta original de 13.</div>
+    </div>
+    <div class="rcell">
+      <div class="k">Pontos</div>
+      <div class="pair"><span class="exp">977</span><span class="got green">981</span></div>
+      <div class="s">7 corridas caíram na janela 3x. Faltam 19.</div>
+    </div>
+    <div class="rcell">
+      <div class="k">Início do turno</div>
+      <div class="pair"><span class="exp">15h</span><span class="got red">19h</span></div>
+      <div class="s">4 horas perdidas — e justamente as do rush com 3x.</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="ct">A lição da noite: geografia</span>
+    Duas exclusivas te levaram aos extremos opostos — <b>Parker no sul</b> (19h34) e <b>Boulder no norte</b> (22h17). Entre elas e depois, você quase não pisou em downtown. As três horas em Boulder renderam <b>0,6 exclusiva por hora</b>; o eixo Denver–Aurora rendeu 3,4. Não foi o horário que falhou, foi o mapa.
+  </div>
+
+  <h2>Ritmo medido</h2>
+  <p class="sub">Onde as exclusivas realmente chegaram.</p>
+  <table class="tbl">
+    <thead><tr><th>Janela</th><th>Exclusivas</th><th>Por hora</th></tr></thead>
+    <tbody>
+      <tr><td class="best">19h34 – 21h03 · eixo</td><td class="best">5</td><td class="best">3,4</td></tr>
+      <tr><td class="min">21h03 – 00h33 · Boulder</td><td class="min">2</td><td class="min">0,6</td></tr>
+      <tr><td>00h33 – 02h13 · voltando</td><td>1</td><td>0,6</td></tr>
+      <tr><td class="best">02h13 – 03h55 · eixo</td><td class="best">5</td><td class="best">2,9</td></tr>
+    </tbody>
+  </table>
+  <p class="tier-legend">Duas janelas quentes, não uma. A madrugada de 02h às 04h é quase tão boa quanto o começo da noite — aeroporto, Reserve, VIP. O bloco 15h–19h continua sem nenhum dado.</p>
+
+  <div class="callout good">
+    <span class="ct">O que funcionou</span>
+    Começou 4 horas atrasado, perdeu o rush inteiro, passou três horas exilado em Boulder — e mesmo assim entregou <b>13 exclusivas e 100% de aceite</b>. Esse é o seu piso, não o seu teto. Com o turno inteiro e ficando no eixo, 14 por noite é folgado.
+  </div>
+</section>
+
+<!-- ================= TER 28 ================= -->
+<section class="day-page" id="d28">
+  <div class="day-head">
+    <div class="dh-top">
+      <div><div class="dh-sub">Dia 2 de 5 · hoje</div><h2>Terça 28</h2></div>
+    </div>
+    <div class="dh-grid">
+      <div><div class="k">Turno</div><div class="v">16h→04h</div></div>
+      <div><div class="k">Partindo de</div><div class="v">55%</div></div>
+      <div><div class="k">Pontos 3x</div><div class="v gold">15–19 · 21–00</div></div>
+      <div><div class="k">Marco</div><div class="v green">1000 pts</div></div>
+    </div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier min"><div class="k">Mínimo</div><div class="v">12</div><div class="u">exclusivas</div><div class="s">→ <b>63%</b></div></div>
+    <div class="tier want"><div class="k">Desejado</div><div class="v">14</div><div class="u">exclusivas</div><div class="s">→ <b>65%</b></div></div>
+    <div class="tier best"><div class="k">Excepcional</div><div class="v">16</div><div class="u">exclusivas</div><div class="s">→ <b>66%</b></div></div>
+  </div>
+
+  <div class="callout good">
+    <span class="ct">Marco do dia</span>
+    Faltam <b>19 pontos</b> para os 1000. Sete corridas na janela 3x resolvem. Confirme no app e depois esqueça os pontos de vez — daqui até sexta é só acceptance rate.
+  </div>
+
+  <div class="timeline">
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">16:00 → 19:00</span><span class="slot-zone">Centro · Cherry Creek</span><span class="tag3x">3x pontos</span><span class="tag-meta">3 exclusivas</span></div>
+      <h3>O bloco cego</h3>
+      <p>Nenhum dado seu existe nessa faixa — em julho está <b>zerada</b>. Capture toda oferta: se vierem 3 ou mais exclusivas até as 19h, a aposta se confirma. Se vier 1, a gente reconcentra nas duas janelas quentes.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">19:00 → 21:00</span><span class="slot-zone">Centro · Aurora</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Janela quente nº 1 — medida</h3>
+      <p>Ontem: <b>5 exclusivas em 89 minutos</b>, 3,4 por hora. Se uma delas apontar para Parker ou Castle Rock, aceite (é obrigatório) mas volte offline no destino.</p>
+    </div>
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">21:00 → 00:00</span><span class="slot-zone">LoDo · Capitol Hill</span><span class="tag3x">3x pontos</span><span class="tag-meta">2 exclusivas</span></div>
+      <h3>Noite + pontos triplos</h3>
+      <p>Aqui os 1000 pontos fecham. Foi exatamente neste bloco que Boulder te engoliu ontem. Se sair do eixo, volte na hora.</p>
+    </div>
+    <div class="slot">
+      <div class="slot-head"><span class="slot-time">00:00 → 02:00</span><span class="slot-zone">Centro</span><span class="tag-meta">1 exclusiva</span></div>
+      <h3>Vale morto</h3>
+      <p>O bloco mais fraco da noite nos dois lados da medição. Use para se reposicionar no centro e descansar — o que vem depois vale a pena.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">02:00 → 04:00</span><span class="slot-zone">Centro · DEN</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Janela quente nº 2 — a surpresa</h3>
+      <p>Ontem: <b>5 exclusivas em 102 minutos</b>, 2,9 por hora. Aeroporto, Reserve e VIP aparecem aqui. Quase tão boa quanto o começo da noite — e eu tinha mandado cortar. Não corte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUA 29 ================= -->
+<section class="day-page" id="d29">
+  <div class="day-head">
+    <div class="dh-top">
+      <div><div class="dh-sub">Dia 3 de 5 · ponto de decisão</div><h2>Quarta 29</h2></div>
+    </div>
+    <div class="dh-grid">
+      <div><div class="k">Turno</div><div class="v">16h→04h</div></div>
+      <div><div class="k">Meta acumulada</div><div class="v diamond">28</div></div>
+      <div><div class="k">Pontos 3x</div><div class="v gold">15–19 · 21–00</div></div>
+      <div><div class="k">Alerta se</div><div class="v" style="color:var(--red-soft)">&lt;70%</div></div>
+    </div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier min"><div class="k">Mínimo</div><div class="v">12</div><div class="u">exclusivas</div><div class="s">→ <b>71%</b></div></div>
+    <div class="tier want"><div class="k">Desejado</div><div class="v">14</div><div class="u">exclusivas</div><div class="s">→ <b>74%</b></div></div>
+    <div class="tier best"><div class="k">Excepcional</div><div class="v">16</div><div class="u">exclusivas</div><div class="s">→ <b>77%</b></div></div>
+  </div>
+
+  <div class="callout warn">
+    <span class="ct">A decisão de quarta</span>
+    Se ao fim desta noite você estiver <b>abaixo de 70%</b>, o volume de ofertas exclusivas não está dando conta e o Diamante fica improvável mesmo dirigindo o limite nos dois últimos dias. Nesse caso a conversa muda: vale mais parar de queimar ganho por hora e recomeçar o próximo ciclo com o acceptance já em ~70%, que é meio caminho andado.
+  </div>
+
+  <div class="timeline">
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">15:00 → 19:00</span><span class="slot-zone">Centro · Cherry Creek</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Rush</h3>
+      <p>Meio de semana: o rush da tarde é mais previsível que a madrugada. Priorize essa faixa se tiver que cortar horas.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">19:00 → 21:00</span><span class="slot-zone">Centro · Aurora</span><span class="tag-meta">3 exclusivas</span></div>
+      <h3>Janela de ouro</h3>
+      <p>Se esfriar em Aurora, volte pro centro <b>offline</b> em vez de esperar parado.</p>
+    </div>
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">21:00 → 00:00</span><span class="slot-zone">LoDo</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Noite</h3>
+      <p>Confira o app à meia-noite antes de decidir se estica a madrugada.</p>
+    </div>
+    <div class="slot">
+      <div class="slot-head"><span class="slot-time">00:00 → 03:00</span><span class="slot-zone">Centro</span><span class="tag-meta">3 exclusivas</span></div>
+      <h3>Madrugada</h3>
+      <p>Estenda até 04h só se estiver atrás do mínimo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUI 30 ================= -->
+<section class="day-page" id="d30">
+  <div class="day-head">
+    <div class="dh-top">
+      <div><div class="dh-sub">Dia 4 de 5 · pode ser o último</div><h2>Quinta 30</h2></div>
+    </div>
+    <div class="dh-grid">
+      <div><div class="k">Turno</div><div class="v">15h→02h</div></div>
+      <div><div class="k">Meta acumulada</div><div class="v diamond">42</div></div>
+      <div><div class="k">Pontos 3x</div><div class="v gold">15–19 · 21–00</div></div>
+      <div><div class="k">Se der 16</div><div class="v green">fecha hoje</div></div>
+    </div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier min"><div class="k">Mínimo</div><div class="v">12</div><div class="u">exclusivas</div><div class="s">→ <b>79%</b></div></div>
+    <div class="tier want"><div class="k">Desejado</div><div class="v">14</div><div class="u">exclusivas</div><div class="s">→ <b>83%</b></div></div>
+    <div class="tier best"><div class="k">Excepcional</div><div class="v">16</div><div class="u">exclusivas</div><div class="s">→ <b>86%</b> 🔷</div></div>
+  </div>
+
+  <div class="callout">
+    <span class="ct">Estratégia da véspera</span>
+    Encerre às 02h, não às 03h — a menos que esteja a 3 ou 4 corridas de fechar. Sexta tem 10 horas de 3x contínuo e é o dia que encerra o ciclo; chegar cansado nela é o pior desfecho possível.
+  </div>
+
+  <div class="timeline">
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">15:00 → 19:00</span><span class="slot-zone">Centro · Cherry Creek</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Rush</h3>
+      <p>Quinta já esquenta — em julho rendeu 18 corridas, acima de terça e quarta.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">19:00 → 21:00</span><span class="slot-zone">Centro · Aurora · Lakewood</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Janela de ouro</h3>
+      <p>Noite de quinta já tem movimento de saída. Fique no eixo centro–Aurora.</p>
+    </div>
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">21:00 → 00:00</span><span class="slot-zone">LoDo · Capitol Hill</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Noite</h3>
+      <p>Se você vier na faixa excepcional, é aqui que o 85% aparece na tela.</p>
+    </div>
+    <div class="slot">
+      <div class="slot-head"><span class="slot-time">00:00 → 02:00</span><span class="slot-zone">Centro</span><span class="tag-meta">2 exclusivas</span></div>
+      <h3>Madrugada curta</h3>
+      <p>Duas horas e para. Guarde a energia para sexta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEX 31 ================= -->
+<section class="day-page" id="d31">
+  <div class="day-head">
+    <div class="dh-top">
+      <div><div class="dh-sub">Dia 5 de 5 · último do ciclo</div><h2>Sexta 31</h2></div>
+    </div>
+    <div class="dh-grid">
+      <div><div class="k">Turno</div><div class="v">13h→00h</div></div>
+      <div><div class="k">Fecha em</div><div class="v gold">23:59</div></div>
+      <div><div class="k">Pontos 3x</div><div class="v gold">14h–00h</div></div>
+      <div><div class="k">Meta</div><div class="v diamond">depende</div></div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="ct">Última chance</span>
+    O que valer o seu acceptance rate às <b>23h59 de sexta</b> é o que conta. Corrida feita depois da meia-noite já é do ciclo seguinte.
+  </div>
+
+  <h2>Quanto falta hoje</h2>
+  <p class="sub">Depende só de onde você fechou a quinta. Olhe o número no app e leia a linha correspondente.</p>
+  <table class="tbl">
+    <thead><tr><th>Se quinta fechou em</th><th>Exclusivas hoje</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td class="min">79%</td><td class="min">10</td><td class="min">86% · sem margem</td></tr>
+      <tr><td class="want">83%</td><td class="want">4</td><td class="want">87% · tranquilo</td></tr>
+      <tr><td class="best">85%+</td><td class="best">0</td><td class="best">já está feito 🔷</td></tr>
+      <tr><td>abaixo de 76%</td><td>14+</td><td>apertado, mas possível</td></tr>
+    </tbody>
+  </table>
+
+  <div class="timeline">
+    <div class="slot">
+      <div class="slot-head"><span class="slot-time">13:00 → 14:00</span><span class="slot-zone">Centro</span><span class="tag-meta">1 exclusiva</span></div>
+      <h3>Aquecimento</h3>
+      <p>Entre online uma hora antes do 3x abrir. Corrida é corrida.</p>
+    </div>
+    <div class="slot hot">
+      <div class="slot-head"><span class="slot-time">14:00 → 18:00</span><span class="slot-zone">Centro · Cherry Creek</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Sexta abre cedo</h3>
+      <p>A janela de 3x da sexta é a maior da semana: <b>14h à meia-noite sem interrupção</b>.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">18:00 → 21:00</span><span class="slot-zone">LoDo · Centro · Aurora</span><span class="tag3x">3x pontos</span><span class="tag-meta">4 exclusivas</span></div>
+      <h3>Pico da semana</h3>
+      <p>Happy hour + saída de sexta + sua melhor faixa histórica. É o bloco mais denso de ofertas dos 5 dias.</p>
+    </div>
+    <div class="slot peak">
+      <div class="slot-head"><span class="slot-time">21:00 → 23:59</span><span class="slot-zone">LoDo · Capitol Hill</span><span class="tag3x">3x pontos</span><span class="tag-meta">3+ exclusivas</span></div>
+      <h3>Reta final</h3>
+      <p>Confira o app a cada corrida. Assim que bater <b>85%</b>, está feito — continuar aceitando só sobe. Se der 87–88%, melhor: sobra folga para o fechamento.</p>
+    </div>
+    <div class="slot rest">
+      <div class="slot-head"><span class="slot-time">00:00</span><span class="slot-zone">Fim do ciclo</span></div>
+      <h3>Acabou</h3>
+      <p>Print da tela de status às 23h55, por garantia. Depois disso o Trip Radar volta a ser seu amigo e você volta a escolher corrida — o próximo ciclo começa do zero e você tem 3 meses.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Boa sorte, Alexandre · <span>fique no eixo Denver–Aurora 🔷</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  // ---------- tabs ----------
+  var buttons = document.querySelectorAll('.day-nav button');
+  var pages = document.querySelectorAll('.day-page');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      buttons.forEach(function(b){ b.classList.remove('active'); });
+      pages.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var el = document.getElementById(btn.dataset.day);
+      if(el) el.classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---------- checklist ----------
+  document.querySelectorAll('.checklist li').forEach(function(li){
+    li.addEventListener('click', function(){ li.classList.toggle('done'); });
+  });
+
+  // ---------- domino model (noite completa de seg 27) ----------
+  // 13 exclusivas renderam +8 pontos => densidade medida 0,62.
+  // Bloco antigo restante: 67 posicoes com 23 aceitas / 44 recusas.
+  // 67-86 : sessao 26-27 jul (19 aceitas, 1 recusa)
+  // 87-99 : as 13 exclusivas de segunda
+  function spread(slots, decl){
+    var mark = new Array(slots).fill(true), step = slots/decl, i, idx;
+    for(i=0;i<decl;i++){
+      idx = Math.floor(i*step) % slots;
+      while(mark[idx] === false){ idx = (idx+1) % slots; }
+      mark[idx] = false;
+    }
+    return mark;
+  }
+  var win = new Array(100), i;
+  var blk = spread(67,44);
+  for(i=0;i<67;i++) win[i] = blk[i];
+  for(i=67;i<87;i++) win[i] = true;
+  win[79] = false;
+  for(i=87;i<100;i++) win[i] = true;
+
+  var strip = document.getElementById('strip');
+  var cells = [];
+  for(i=0;i<100;i++){
+    var c = document.createElement('div');
+    c.className = 'cell';
+    strip.appendChild(c);
+    cells.push(c);
+  }
+
+  var slider = document.getElementById('sim');
+  var outPct = document.getElementById('simPct');
+  var outN = document.getElementById('simN');
+
+  function render(n){
+    var view = [], j;
+    for(j=n;j<100;j++) view.push({ok:win[j], fresh:false});
+    for(j=0;j<n;j++) view.push({ok:true, fresh:true});
+    var acc = 0;
+    for(j=0;j<100;j++){
+      if(view[j].ok) acc++;
+      cells[j].className = 'cell' + (view[j].ok ? ' ok' : '') + (view[j].fresh ? ' fresh' : '');
+    }
+    outPct.textContent = acc + '%';
+    outPct.className = acc >= 85 ? 'hit' : '';
+    outN.textContent = n;
+  }
+
+  slider.addEventListener('input', function(){ render(parseInt(slider.value,10)); });
+  render(0);
+})();
+</script>
+</body>
+</html>
